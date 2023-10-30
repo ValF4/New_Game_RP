@@ -1,4 +1,12 @@
+local DataStoreService = game:GetService("DataStoreService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local module = require(ReplicatedStorage.Shared.Hello)
+local status = DataStoreService:GetDataStore("statusplayer")
+local playerDB = require(ReplicatedStorage.Shared.playersDataBase)
 
-module()
+game.Players.PlayerAdded:Connect(function()
+    print("Entrou")
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    print("Saiu")
+end)

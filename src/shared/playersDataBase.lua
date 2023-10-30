@@ -8,8 +8,6 @@ function player.new(name)
     new.playerLife =                100
     new.playerLevel =               0
     new.experiencePlayerLevel =     0
-    new.experienceXpPlayerLevel =   0
-    new.experienceXpPlayerExp =     0
     new.playerHunger =              100
     new.playerThirst =              100
     new.playerMoneyWallet =         500
@@ -34,14 +32,6 @@ end
 
 function player:getExperiencePlayer()
     return self.experienceXpPlayerLevel
-end
-
-function player:getExperienceXpPlayerLevel()
-    return self.experienceXpPlayerLevel / 100
-end
-
-function player:getExperienceXpPlayerExp()
-    return self.experienceXpPlayerExp
 end
 
 function player:getPlayerHunger()
@@ -84,14 +74,6 @@ end
 
 function player:setExperiencePlayer(experiencePlayerLevel)
     self.experiencePlayerLevel = experiencePlayerLevel
-end
-
-function player:setExperienceXpPlayerLevel(experienceXpPlayerLevel)
-    self.experienceXpPlayerLevel = experienceXpPlayerLevel
-end
-
-function player:setExperienceXpPlayerExp(experienceXpPlayerExp)
-    self.experienceXpPlayerExp = experienceXpPlayerExp
 end
 
 function player:setPlayerHunger(playerHunger)
