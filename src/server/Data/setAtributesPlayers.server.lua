@@ -1,3 +1,6 @@
+local listWorks = require(game.ReplicatedStorage.Shared.worksList.workList)
+local listNames = require(game.ReplicatedStorage.Shared.listNames.listNames)
+
 game.Players.PlayerAdded:Connect(function(player)
     
     local leaderstats = Instance.new("Folder")
@@ -5,23 +8,23 @@ game.Players.PlayerAdded:Connect(function(player)
     leaderstats.Parent = player
 
     local playerName = Instance.new("StringValue")
-    playerName.Name = "Name"
-    playerName.Value = "nill"
+    playerName.Name = "PlayerName"
+    playerName.Value = listNames["Lucas"]
     playerName.Parent = leaderstats
-
-    local playerPossition = Instance.new("FloatCurve")
-    playerPossition.Name = "Possition"
-    playerPossition.Value = "nill"
-    playerPossition.Parent = leaderstats
 
     local playerWork = Instance.new("StringValue")
     playerWork.Name = "Work"
-    playerWork.Value = "nill"
+    playerWork.Value = listWorks["Civilian"]
     playerWork.Parent = leaderstats
+
+    local playerSubWork = Instance.new("StringValue")
+    playerSubWork.Name = "subWork"
+    playerSubWork.Value = listWorks["Civilian"]
+    playerSubWork.Parent = leaderstats
 
     local walletMoney = Instance.new("IntValue")
     walletMoney.Name = "Money"
-    walletMoney.Value =  0
+    walletMoney.Value =  500
     walletMoney.Parent = leaderstats
 
     local bankMoney = Instance.new("IntValue")
