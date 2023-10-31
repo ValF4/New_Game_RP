@@ -9,6 +9,11 @@ game.Players.PlayerAdded:Connect(function(player)
     playerName.Value = "nill"
     playerName.Parent = leaderstats
 
+    local playerPossition = Instance.new("FloatCurve")
+    playerPossition.Name = "Possition"
+    playerPossition.Value = "nill"
+    playerPossition.Parent = leaderstats
+
     local playerWork = Instance.new("StringValue")
     playerWork.Name = "Work"
     playerWork.Value = "nill"
@@ -16,7 +21,7 @@ game.Players.PlayerAdded:Connect(function(player)
 
     local walletMoney = Instance.new("IntValue")
     walletMoney.Name = "Money"
-    walletMoney.Value =  500
+    walletMoney.Value =  0
     walletMoney.Parent = leaderstats
 
     local bankMoney = Instance.new("IntValue")
