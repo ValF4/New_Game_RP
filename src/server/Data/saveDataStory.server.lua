@@ -19,7 +19,6 @@ local function playerJoin(player)
 
     local playerUserID = "Player_" .. player.UserId
     local data = playerDatas:GetAsync(playerUserID)
-    print(data)
 
     if data then
         playerName.Value    = data['PlayerName']
@@ -36,7 +35,7 @@ local function playerJoin(player)
         playerName.Value    = "nill"
         playerWork.Value    = listWorks["Civilian"]
         playerSubWork.Value = listWorks["Civilian"]
-        walletMoney.Value   = 2500
+        walletMoney.Value   = 5000
         bankMoney.Value     = 0
         dirtyMoney.Value    = 0
         playerLevel.Value   = 0
@@ -58,15 +57,11 @@ local function createTable(player)
 end
 
 local function playerExit(player)
-    local vecPos =      player.Character.Head.Position
-	local pos =         {math.floor(vecPos.X), math.floor(vecPos.Y), math.floor(vecPos.Z)}
-    print(pos)
     local playerStats = createTable(player)
     if playerStats then
         local PlayerUserID = "Player_".. player.UserId
         local success, err = pcall(function()
             playerDatas:SetAsync(PlayerUserID, playerStats)
-            print("passei aqui")
         end)
         if success then
             print("Data saved successfully.")
