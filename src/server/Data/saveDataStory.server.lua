@@ -36,7 +36,7 @@ local function playerJoin(player)
         playerName.Value    = "nill"
         playerWork.Value    = listWorks["Civilian"]
         playerSubWork.Value = listWorks["Civilian"]
-        walletMoney.Value   = 5000
+        walletMoney.Value   = 2500
         bankMoney.Value     = 0
         dirtyMoney.Value    = 0
         playerLevel.Value   = 0
@@ -58,7 +58,9 @@ local function createTable(player)
 end
 
 local function playerExit(player)
-    print("Entrei aqui")
+    local vecPos =      player.Character.Head.Position
+	local pos =         {math.floor(vecPos.X), math.floor(vecPos.Y), math.floor(vecPos.Z)}
+    print(pos)
     local playerStats = createTable(player)
     if playerStats then
         local PlayerUserID = "Player_".. player.UserId
