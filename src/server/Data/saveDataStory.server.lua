@@ -1,12 +1,10 @@
 local DataStoreService = game:GetService("DataStoreService")
-local playerDatas = DataStoreService:GetDataStore('MyDataSore')
+local playerDatas = DataStoreService:GetDataStore('MyDataStore')
+
 local listWorks = require(game.ReplicatedStorage.Shared.worksList.workList)
-local listNames = require(game.ReplicatedStorage.Shared.listNames.listNames)
 
 local function playerJoin(player)
-    
     local leaderstats = player:WaitForChild('leaderstats')
-    local Character = game.Workspace:WaitForChild(player.Name)
 
     local playerName    = leaderstats:WaitForChild('PlayerName')
     local playerWork    = leaderstats:WaitForChild('Work')
@@ -21,61 +19,62 @@ local function playerJoin(player)
 
     local playerUserID = "Player_" .. player.UserId
     local data = playerDatas:GetAsync(playerUserID)
+    print(data)
 
     if data then
-        playerName      = data['PlayerName']
-        playerWork      = data['Work']
-        playerSubWork   = data['subWork']
-        walletMoney     = data['Money']
-        bankMoney       = data['Bankmoney']
-        dirtyMoney      = data['DirtyMoney']
-        playerLevel     = data['PlayerLevel']
-        xpPlayerLevel   = data['XPplayerLevel']
-        PlayerHunger    = data['PlayerHunger']
-        PlayerThirst    = data['PlayerThirst']
+        playerName.Value    = data['PlayerName']
+        playerWork.Value    = data['Work']
+        playerSubWork.Value = data['subWork']
+        walletMoney.Value   = data['Money']
+        bankMoney.Value     = data['Bankmoney']
+        dirtyMoney.Value    = data['DirtyMoney']
+        playerLevel.Value   = data['PlayerLevel']
+        xpPlayerLevel.Value = data['XPplayerLevel']
+        PlayerHunger.Value  = data['PlayerHunger']
+        PlayerThirst.Value  = data['PlayerThirst']
     else
-        playerName      .Value  = listNames["Lucas"]
-		playerWork      .Value 	= listWorks["Civilian"]
-		playerSubWork   .Value  = listWorks["Civilian"]
-		walletMoney     .Value 	= 500
-        bankMoney       .Value  = 0
-        dirtyMoney      .Value  = 0
-        playerLevel     .Value  = 0
-        xpPlayerLevel   .Value  = 0
-        PlayerHunger    .Value  = 100
-        PlayerThirst    .Value  = 100
-
+        playerName.Value    = "nill"
+        playerWork.Value    = listWorks["Civilian"]
+        playerSubWork.Value = listWorks["Civilian"]
+        walletMoney.Value   = 5000
+        bankMoney.Value     = 0
+        dirtyMoney.Value    = 0
+        playerLevel.Value   = 0
+        xpPlayerLevel.Value = 0
+        PlayerHunger.Value  = 100
+        PlayerThirst.Value  = 100
     end
 end
 
 local function createTable(player)
     local playerStats = {}
-    for _, stat in pairs(player.leaderstats:GetChildren()) do
-        playerStats[stat.Name] = stat.Value
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if leaderstats then
+        for _, stat in pairs(leaderstats:GetChildren()) do
+            playerStats[stat.Name] = stat.Value
+        end
     end
     return playerStats
 end
 
-
-local function saveSystem(player)
+local function playerExit(player)
+    print("Entrei aqui")
     local playerStats = createTable(player)
-    local vecPos = player.Character.Head.Position
-    local playerPossiton = {math.floor(vecPos.X), math.floor(vecPos.Y), math.floor(vecPos.Z)}
-    local sucess, err = pcall(function()
+    if playerStats then
         local PlayerUserID = "Player_".. player.UserId
-        playerDatas:SetAsync(PlayerUserID, playerStats, playerPossiton)
-    end)
-
-    if not sucess then
-        warn("Data save failed or could not save data")
-    end
-end
-
-while wait(5) do -- Auto Saving System
-    for _, player in ipairs(game.Players:GetChildren()) do
-        saveSystem(player)
+        local success, err = pcall(function()
+            playerDatas:SetAsync(PlayerUserID, playerStats)
+            print("passei aqui")
+        end)
+        if success then
+            print("Data saved successfully.")
+        else
+            warn("Data save failed: " .. err)
+        end
+    else
+        warn("Player stats table is nil.")
     end
 end
 
 game.Players.PlayerAdded:Connect(playerJoin)
-game.Players.PlayerRemoving:Connect(saveSystem)
+game.Players.PlayerRemoving:Connect(playerExit)
