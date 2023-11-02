@@ -1,7 +1,7 @@
 local DataStoreService = game:GetService("DataStoreService")
 local PossitionStore = DataStoreService:GetDataStore("PossitionDataStore")
 
-listPositions = {}
+local listPositions = {}
 
 function savePosition(player)
         local playerc = player.Character.Head.position
@@ -10,7 +10,7 @@ function savePosition(player)
 end
 
 game.Players.PlayerAdded:Connect(function(player)
-    task.wait(3)
+    task.wait(.5)
 
     local PlayerCharacter = game.Workspace:WaitForChild(player.Name)
     local character = player.Character
@@ -22,20 +22,27 @@ game.Players.PlayerAdded:Connect(function(player)
     
     if success then
         if loadValue then
-            print("Dados carregados: ")
-        PlayerCharacter:MoveTo(Vector3.new(loadValue[1], loadValue[2], loadValue[3]))
+            warn("Dados carregados: ")
+            PlayerCharacter:MoveTo(Vector3.new(
+                loadValue[1],
+                loadValue[2],
+                loadValue[3]
+            ))
+            warn("Dados carregados com sucesso")
         else
-            print("Nenhum dado foi encontrado no DataStore para o jogador " .. player.Name)
+            warn("Nenhum dado foi encontrado no DataStore para o jogador " .. player.Name)
         end
     else
-        print("Erro ao carregar dados: " .. loadValue)
+        warn("Erro ao carregar dados: " .. loadValue)
     end
 
-    task.wait(10)
+    task.wait(5)
     while true do
         if character then
             listPositions = savePosition(player)
             task.wait(5)
+        else
+            break
         end
     end
 end)
@@ -45,11 +52,12 @@ game.Players.PlayerRemoving:Connect(function(player)
     local success, err = pcall(function()
         return PossitionStore:SetAsync(playerUserID, listPositions)
     end)
-    
+
+    task.wait(.5)
     if success then
-        print("Posições salvas com sucesso!!!")
+        warn("Posições salvas com sucesso!!!")
     else
-        print("Houve um erro ao salvar no banco de dados: " .. err)
+        warn("Houve um erro ao salvar no banco de dados: " .. err)
     end
 end)
 

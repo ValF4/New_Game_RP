@@ -64,7 +64,7 @@ local function playerExit(player)
             playerDatas:SetAsync(PlayerUserID, playerStats)
         end)
         if success then
-            print("Data saved successfully.")
+            warn("Data saved successfully.")
         else
             warn("Data save failed: " .. err)
         end
