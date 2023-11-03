@@ -1,3 +1,5 @@
+-- Desabilidado
+
 local ContextActionService  = game:GetService("ContextActionService")
 local Players               = game:GetService("Players")
 local RunService            = game:GetService("RunService")

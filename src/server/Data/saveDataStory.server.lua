@@ -1,7 +1,7 @@
 local DataStoreService = game:GetService("DataStoreService")
 local playerDatas = DataStoreService:GetDataStore('MyDataStore')
 
-local listWorks = require(game.ReplicatedStorage.Shared.worksList.workList)
+local listWorks = require(game:GetService("ReplicatedStorage").Shared.ListJobs.ModuleJobs)
 
 local function playerJoin(player)
     local leaderstats = player:WaitForChild('leaderstats')
@@ -16,7 +16,8 @@ local function playerJoin(player)
     local xpPlayerLevel = leaderstats:WaitForChild('XPplayerLevel')
     local PlayerHunger  = leaderstats:WaitForChild('PlayerHunger')
     local PlayerThirst  = leaderstats:WaitForChild('PlayerThirst')
-
+    
+    warn("Carregando atribudos do player, aguarde...")
     local playerUserID = "Player_" .. player.UserId
     local data = playerDatas:GetAsync(playerUserID)
 
@@ -42,6 +43,7 @@ local function playerJoin(player)
         xpPlayerLevel.Value = 0
         PlayerHunger.Value  = 100
         PlayerThirst.Value  = 100
+        warn("Atribudos carregados com sucesso!!")
     end
 end
 
@@ -63,6 +65,7 @@ local function playerExit(player)
         local success, err = pcall(function()
             playerDatas:SetAsync(PlayerUserID, playerStats)
         end)
+        task.wait(.5)
         if success then
             warn("Data saved successfully.")
         else

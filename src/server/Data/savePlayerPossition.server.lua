@@ -22,13 +22,13 @@ game.Players.PlayerAdded:Connect(function(player)
     
     if success then
         if loadValue then
-            warn("Dados carregados: ")
+            warn("Dados carregados, Aguarde... ")
             PlayerCharacter:MoveTo(Vector3.new(
                 loadValue[1],
                 loadValue[2],
                 loadValue[3]
             ))
-            warn("Dados carregados com sucesso")
+            warn("Dados carregados com sucesso!")
         else
             warn("Nenhum dado foi encontrado no DataStore para o jogador " .. player.Name)
         end

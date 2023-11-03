@@ -1,4 +1,4 @@
-local player = {} 
+local player = {} -- Desabilidado
 player.__index = player
 
 
