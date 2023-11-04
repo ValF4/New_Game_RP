@@ -9,16 +9,14 @@ function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
     end
 end
 
-function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYERS)
-    local MOUSE                  = PLAYERS:GetMouse()
+function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER)
+    local MOUSE                  = PLAYER:GetMouse()
     local TARGET                 = MOUSE.Target
 
     if TARGET and TARGET.Parent:FindFirstAncestorOfClass("Model") then
         local model = TARGET:FindFirstAncestorOfClass("Model")
         if model:FindFirstChild("Humanoid") then
-            return true
-        else
-            return false
+            return true, model
         end
     end
 end
