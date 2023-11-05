@@ -2,23 +2,20 @@ local CHEKING_MODULE    = require(game:GetService("ReplicatedStorage").Shared.Fu
 local PLAYER           = game:GetService("Players").LocalPlayer
 local UserInputService  = game:GetService("UserInputService")
 
-UserInputService.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
-    
-    local lastPrintTime = 0
-    local printInterval = 1 
-    local PRESSKEY      = Enum.UserInputType.MouseButton1
-    local CHECK_MOUSE, MODEL   = CHEKING_MODULE.PLAYER_ON_TOP_MOUSE(PLAYER)
-    local CEKING_CLICK  = CHEKING_MODULE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
-    local CHECK_PLAYER_DISTANCE = CHEKING_MODULE.CHECK_PLAYER_DISTANCE()
 
-    if CEKING_CLICK and CHECK_MOUSE then
-        if CHECK_PLAYER_DISTANCE then
-            local currentTime = tick()
-            if currentTime - lastPrintTime >= printInterval then
-                print((PLAYER - MODEL).Magnitude)
-                lastPrintTime = currentTime
+UserInputService.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
+    local MAX_DISTANCE                      = 12
+    local PRESSKEY                          = Enum.UserInputType.MouseButton1
+    local CEKING_CLICK                      = CHEKING_MODULE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
+
+    if CEKING_CLICK then
+        local CHECK_MOUSE, MODEL            = CHEKING_MODULE.PLAYER_ON_TOP_MOUSE(PLAYER)
+        if CHECK_MOUSE then
+            local CHECK_DISTANCE_PLAYERS    = CHEKING_MODULE.CHECK_PLAYER_DISTANCE(PLAYER, MODEL, MAX_DISTANCE)
+            if  CHECK_DISTANCE_PLAYERS then
+                print("A")
             end
         end
     end
 end)
-
+    

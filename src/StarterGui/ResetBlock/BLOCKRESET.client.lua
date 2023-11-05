@@ -1,1 +1,0 @@
-local StarterGui = game:GetService("StarterGui"):SetCore("ResetButtonCallback", false)

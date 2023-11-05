@@ -1,13 +1,8 @@
-local DataStoreService = game:GetService("DataStoreService")
-local PossitionStore = DataStoreService:GetDataStore("PossitionDataStore")
+local DataStoreService  = game:GetService("DataStoreService")
+local PossitionStore    = DataStoreService:GetDataStore("PossitionDataStore")
+local CHEKING_MODULE    = require(game:GetService("ReplicatedStorage").Shared.Functions.CHECK_SERVICE)
 
 local listPositions = {}
-
-function savePosition(player)
-        local playerc = player.Character.Head.position
-        local pos = {math.floor(playerc.X), math.floor(playerc.Y), math.floor(playerc.Z)}
-    return pos
-end
 
 game.Players.PlayerAdded:Connect(function(player)
     task.wait(.5)
@@ -39,7 +34,7 @@ game.Players.PlayerAdded:Connect(function(player)
     task.wait(5)
     while true do
         if character then
-            listPositions = savePosition(player)
+            listPositions = CHEKING_MODULE.GET_POSITION_PLAYER(player)
             task.wait(5)
         else
             break
