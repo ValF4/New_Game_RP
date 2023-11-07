@@ -23,7 +23,7 @@ game.Players.PlayerAdded:Connect(function(player)
 
     local walletMoney = Instance.new("IntValue")
     walletMoney.Name = "Money"
-    walletMoney.Value = 0
+    walletMoney.Value = 5000
     walletMoney.Parent = leaderstats
 
     local bankMoney = Instance.new("IntValue")
@@ -48,11 +48,11 @@ game.Players.PlayerAdded:Connect(function(player)
 
     local PlayerHunger = Instance.new("IntValue")
     PlayerHunger.Name = "PlayerHunger"
-    PlayerHunger.Value =  0
+    PlayerHunger.Value =  100
     PlayerHunger.Parent = leaderstats
 
     local PlayerThirst = Instance.new("IntValue")
     PlayerThirst.Name = "PlayerThirst"
-    PlayerThirst.Value =  0
+    PlayerThirst.Value =  100
     PlayerThirst.Parent = leaderstats
 end)

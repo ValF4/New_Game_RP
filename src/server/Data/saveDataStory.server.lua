@@ -1,7 +1,8 @@
 local DataStoreService = game:GetService("DataStoreService")
-local playerDatas = DataStoreService:GetDataStore('MyDataStore')
+local playerDatas      = DataStoreService:GetDataStore('MyDataStore')
 
-local listWorks = require(game:GetService("ReplicatedStorage").Shared.ListJobs.ModuleJobs)
+local listWorks        = require(game:GetService("ReplicatedStorage").Shared.ListJobs.ModuleJobs)
+local SAVING_MODULE    = require(game:GetService("ServerScriptService").Server.Modules.SavePlayerDataBase)
 
 local function playerJoin(player)
     local leaderstats = player:WaitForChild('leaderstats')
@@ -17,9 +18,8 @@ local function playerJoin(player)
     local PlayerHunger  = leaderstats:WaitForChild('PlayerHunger')
     local PlayerThirst  = leaderstats:WaitForChild('PlayerThirst')
     
-    warn("Carregando atribudos do player, aguarde...")
-    local playerUserID = "Player_" .. player.UserId
-    local data = playerDatas:GetAsync(playerUserID)
+    warn("Loading player attributes, please wait...")
+    local success, data = SAVING_MODULE.GET_DB_PLAYER(player, playerDatas)
 
     if data then
         playerName.Value    = data['PlayerName']
@@ -47,32 +47,11 @@ local function playerJoin(player)
     end
 end
 
-local function createTable(player)
-    local playerStats = {}
-    local leaderstats = player:FindFirstChild("leaderstats")
-    if leaderstats then
-        for _, stat in pairs(leaderstats:GetChildren()) do
-            playerStats[stat.Name] = stat.Value
-        end
-    end
-    return playerStats
-end
 
 local function playerExit(player)
-    local playerStats = createTable(player)
+    local playerStats = SAVING_MODULE.CREATE_TABLE_DB(player)
     if playerStats then
-        local PlayerUserID = "Player_".. player.UserId
-        local success, err = pcall(function()
-            playerDatas:SetAsync(PlayerUserID, playerStats)
-        end)
-        task.wait(.5)
-        if success then
-            warn("Data saved successfully.")
-        else
-            warn("Data save failed: " .. err)
-        end
-    else
-        warn("Player stats table is nil.")
+        SAVING_MODULE.SET_PLAYER_DATABASE(player, playerDatas, playerStats)
     end
 end
 

@@ -29,12 +29,12 @@ function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
     return pos
 end
 
-function CHECK_SERVICE.CHECK_PLAYER_DISTANCE(PLAYER, MODEL, MAX_DISTANCE)
+function CHECK_SERVICE.CHECK_PLAYER_DISTANCE(PLAYER, MODEL)
+    local MAX_DISTANCE          = 12
     local PLAYER_GET            = PLAYER.Character.Head.position
     local MODEL_POSSITION       = MODEL.PrimaryPart.position
     local CALCULE_DISTANCE_PLAYERS = ((PLAYER_GET - MODEL_POSSITION).Magnitude)
     if CALCULE_DISTANCE_PLAYERS <= MAX_DISTANCE then
-        print(CALCULE_DISTANCE_PLAYERS)
         return true
     end
         return false
