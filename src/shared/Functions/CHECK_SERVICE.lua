@@ -14,7 +14,7 @@ function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER)
 
     if TARGET and TARGET.Parent:FindFirstAncestorOfClass("Model") then
         local model = TARGET:FindFirstAncestorOfClass("Model")
-        if model:FindFirstChild("HumanoidRootPart") then
+        if model:FindFirstChild("HumanoidRootPart") or model:FindFirstChild("Character") then
             return true, model
         else
             return false
