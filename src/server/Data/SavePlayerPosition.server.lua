@@ -1,7 +1,7 @@
-local DataStoreService  = game:GetService("DataStoreService")
-local PossitionStore    = DataStoreService:GetDataStore("PossitionDataStore")
-local CHEKING_MODULE    = require(game:GetService("ReplicatedStorage").Shared.Functions.CHECK_SERVICE)
-local SAVING_MODULE     = require(game:GetService("ServerScriptService").Server.Modules.SavePlayerDataBase)
+local DSS              = game:GetService("DataStoreService")
+local PositionStore    = DSS:GetDataStore("PossitionDataStore")
+local ChekingModule    = require(game:GetService("ReplicatedStorage").Shared.Functions.CHECK_SERVICE)
+local SavingModule     = require(game:GetService("ServerScriptService").Server.Modules.SavePlayerDataBase)
 
 local listPositions = {}
 
@@ -10,7 +10,7 @@ game.Players.PlayerAdded:Connect(function(player)
 
     local PlayerCharacter = game.Workspace:WaitForChild(player.Name)
 
-    local success,loadValue = SAVING_MODULE.GET_DB_PLAYER(player, PossitionStore)
+    local success,loadValue = SavingModule.GET_DB_PLAYER(player, PositionStore)
     
     if success then
         if loadValue then
@@ -31,7 +31,7 @@ game.Players.PlayerAdded:Connect(function(player)
     task.wait(5)
     while true do
         if PlayerCharacter then
-            listPositions = CHEKING_MODULE.GET_POSITION_PLAYER(player)
+            listPositions = ChekingModule.GET_POSITION_PLAYER(player)
             task.wait(5)
         else
             break
@@ -40,7 +40,7 @@ game.Players.PlayerAdded:Connect(function(player)
 end)
 
 game.Players.PlayerRemoving:Connect(function(player)
-    SAVING_MODULE.SET_PLAYER_DATABASE(player, PossitionStore, listPositions)
+    SavingModule.SET_PLAYER_DATABASE(player, PositionStore, listPositions)
 end)
 
 

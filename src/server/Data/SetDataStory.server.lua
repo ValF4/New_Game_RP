@@ -1,8 +1,8 @@
-local DataStoreService = game:GetService("DataStoreService")
-local playerDatas      = DataStoreService:GetDataStore('MyDataStore')
+local DSS = game:GetService("DataStoreService")
+local PD  = DSS:GetDataStore('MyDataStore')
 
-local listWorks        = require(game:GetService("ReplicatedStorage").Shared.ListJobs.ModuleJobs)
-local SAVING_MODULE    = require(game:GetService("ServerScriptService").Server.Modules.SavePlayerDataBase)
+local ListWorks        = require(game:GetService("ReplicatedStorage").Shared.ListJobs.ModuleJobs)
+local SaveModule    = require(game:GetService("ServerScriptService").Server.Modules.SavePlayerDataBase)
 
 local function playerJoin(player)
     local leaderstats = player:WaitForChild('leaderstats')
@@ -19,7 +19,7 @@ local function playerJoin(player)
     local PlayerThirst  = leaderstats:WaitForChild('PlayerThirst')
     
     warn("Loading player attributes, please wait...")
-    local success, data = SAVING_MODULE.GET_DB_PLAYER(player, playerDatas)
+    local success, data = SaveModule.GET_DB_PLAYER(player, PD)
 
     if data then
         playerName.Value    = data['PlayerName']
@@ -34,8 +34,8 @@ local function playerJoin(player)
         PlayerThirst.Value  = data['PlayerThirst']
     else
         playerName.Value    = "nill"
-        playerWork.Value    = listWorks["Civilian"]
-        playerSubWork.Value = listWorks["Civilian"]
+        playerWork.Value    = ListWorks["Civilian"]
+        playerSubWork.Value = ListWorks["Civilian"]
         walletMoney.Value   = 5000
         bankMoney.Value     = 0
         dirtyMoney.Value    = 0
@@ -49,9 +49,9 @@ end
 
 
 local function playerExit(player)
-    local playerStats = SAVING_MODULE.CREATE_TABLE_DB(player)
+    local playerStats = SaveModule.CREATE_TABLE_DB(player)
     if playerStats then
-        SAVING_MODULE.SET_PLAYER_DATABASE(player, playerDatas, playerStats)
+        SaveModule.SET_PLAYER_DATABASE(player, SaveModule, playerStats)
     end
 end
 
