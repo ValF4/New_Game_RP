@@ -9,11 +9,17 @@ function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
 end
 
 function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER)
-    local MOUSE                  = PLAYER:GetMouse()
-    local TARGET                 = MOUSE.Target
+    local camera = workspace.CurrentCamera
+    local rayOrigin = camera.CFrame.Position
+    local RayDirection  = PLAYER:GetMouse().Hit.Position.Unit * 12
 
-    if TARGET and TARGET.Parent:FindFirstAncestorOfClass("Model") then
-        local model = TARGET:FindFirstAncestorOfClass("Model")
+    local RayResult =  workspace:Raycast(rayOrigin, RayDirection)
+
+     if RayResult then
+        local model = RayResult.Instance:FindFirstAncestorOfClass("Model")
+     end
+    if RayDirection and RayDirection.Parent:FindFirstAncestorOfClass("Model") then
+        local model = RayDirection:FindFirstAncestorOfClass("Model")
         if model:FindFirstChild("HumanoidRootPart") or model:FindFirstChild("Character") then
             return true, model
         else
