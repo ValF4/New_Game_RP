@@ -1,6 +1,6 @@
 local DSS              = game:GetService("DataStoreService")
 local PositionStore    = DSS:GetDataStore("PossitionDataStore")
-local ChekingModule    = require(game:GetService("ReplicatedStorage").Shared.Functions.CHECK_SERVICE)
+local ChekingModule    = require(game:GetService("ReplicatedStorage").Shared.Functions.CheckServices)
 local SavingModule     = require(game:GetService("ServerScriptService").Server.Modules.SavePlayerDataBase)
 
 local listPositions = {}

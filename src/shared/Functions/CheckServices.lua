@@ -8,7 +8,7 @@ function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
     end
 end
 
-function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER, CLASS)
+function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER)
 	local Mouse = PLAYER:GetMouse()
 	local Target = Mouse.Target
 	
@@ -18,6 +18,16 @@ function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER, CLASS)
 	if not Humanoid then return end
 	return Character
 	
+end
+
+function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER, CLASS)
+	local Mouse = PLAYER:GetMouse()
+	local Target = Mouse.Target
+	
+	if not Target then return end
+    local Check_Atribute = Target:GetAttribute(CLASS)
+    if not Check_Atribute then return end
+	return Target
 end
 
 function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
