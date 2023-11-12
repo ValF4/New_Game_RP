@@ -1,6 +1,7 @@
 workList = { 
     ["Civilian"] = "Civilian";
     ["Emergency"] = "Paramedic";
+    ["Police"] = "Police";
     ["workPort"] = {
         "stock organizer";
         "Deliveryman";

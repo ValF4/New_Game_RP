@@ -2,6 +2,7 @@ local RS					= game:GetService("ReplicatedStorage")
 local PLAYER 				= game:GetService("Players").LocalPlayer
 local StarterGui            = game:GetService("StarterGui")
 local UserInputService 		= game:GetService("UserInputService")
+local MOUSE 				= PLAYER:GetMouse()
 
 local ChekingModule 		= require(RS.Shared.Functions.CheckServices)
 local replicated 			= RS:WaitForChild("REMOTE_FUNCTIONS").FIRE_MONEYTRANFER
@@ -12,7 +13,6 @@ local BREAK_GUI 	  		= false
 local LEAVE_MIN_DISTANCE 	= false
 
 local InteractionGUI        = StarterGui.INTERACTION_GUI.PLAYER_INTERACTION_GUI
-local MOUSE 				= PLAYER:GetMouse()
 local FRAME_INTERACTION 	= InteractionGUI.ScrollingFrame
 
 local GET_SEND_PAINEL 		= InteractionGUI.Parent.SEND_MONEY_PANEL.Background_PANEL
@@ -80,12 +80,11 @@ UserInputService.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
 	local PRESSKEY 		= Enum.UserInputType.MouseButton1
 	local CEKING_CLICK 	= ChekingModule.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
 
-    if CEKING_CLICK and not isButtonPressed then local MODEL = ChekingModule.PLAYER_ON_TOP_MOUSE(PLAYER, "Character")
+    if CEKING_CLICK and not isButtonPressed then local MODEL = ChekingModule.PLAYER_ON_TOP_MOUSE(PLAYER)
 
         if MODEL and MODEL ~= PLAYER.Character  then local CHECK_DISTANCE_PLAYERS = ChekingModule.CHECK_PLAYER_DISTANCE(PLAYER, MODEL)
 
             if CHECK_DISTANCE_PLAYERS then
-
 				isButtonPressed = true
 				
 				FRAME_INTERACTION.Position 	= UDim2.new(0, MOUSE.X, 0, MOUSE.Y)

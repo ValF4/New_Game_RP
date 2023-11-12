@@ -1,5 +1,5 @@
-local Cheking_Module        = require(game:GetService("ReplicatedStorage").Shared.Functions.CHECK_SERVICE)
-local InputService      = game:GetService("UserInputService")
+local Cheking_Module        = require(game:GetService("ReplicatedStorage").Shared.Functions.CheckServices)
+local InputService          = game:GetService("UserInputService")
 local Plr                   = game.Players.LocalPlayer
 
 
