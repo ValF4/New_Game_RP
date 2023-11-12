@@ -1,4 +1,4 @@
-local listWorks = require(game:GetService("ReplicatedStorage").Shared.Lists.ListJobs)
+local listWorks = require(game:GetService("ReplicatedStorage").Shared.Lists.JobLists)
 
 game.Players.PlayerAdded:Connect(function(player)
     

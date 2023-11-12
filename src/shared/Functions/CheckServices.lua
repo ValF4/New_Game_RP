@@ -30,18 +30,32 @@ function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER, CLASS)
 	return Target
 end
 
+function CHECK_SERVICE.GET_PLAYER_SERVICE(PLAYER)
+
+    local JobLists = require(game:GetService("ReplicatedStorage").Shared.Lists.JobLists)
+    local Get_Service_Player = PLAYER.leaderstats.Work
+
+    for i, v in pairs(JobLists) do
+        local ActualWork =  JobLists[i]
+        if ActualWork == Get_Service_Player.Value then
+            return ActualWork
+        end
+    end
+
+end
+
 function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
-    local PLAYER_GET = PLAYER.Character.Head.position
-    local pos = {math.floor(PLAYER_GET.X), math.floor(PLAYER_GET.Y), math.floor(PLAYER_GET.Z)}
+    local Get_Player = PLAYER.Character.Head.position
+    local pos = {math.floor(Get_Player.X), math.floor(Get_Player.Y), math.floor(Get_Player.Z)}
     return pos
 end
 
-function CHECK_SERVICE.CHECK_PLAYER_DISTANCE(PLAYER, MODEL)
-    local MAX_DISTANCE          = 12
-    local PLAYER_GET            = PLAYER.Character.Head.position
-    local MODEL_POSSITION       = MODEL.PrimaryPart.position
-    local CALCULE_DISTANCE_PLAYERS = ((PLAYER_GET - MODEL_POSSITION).Magnitude)
-    if CALCULE_DISTANCE_PLAYERS <= MAX_DISTANCE then
+function CHECK_SERVICE.CHECK_PLAYER_DISTANCE(PLAYER, PLAYER_MODEL)
+    local MaxDistance          = 12
+    local Get_Player           = PLAYER.Character.Head.position
+    local ModelPlayerTwo       = PLAYER_MODEL.PrimaryPart.position
+    local PlyersCalculateDistance = ((Get_Player - ModelPlayerTwo).Magnitude)
+    if PlyersCalculateDistance <= MaxDistance then
         return true
     end
         return false
