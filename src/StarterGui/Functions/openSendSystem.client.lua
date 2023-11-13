@@ -1,37 +1,35 @@
 local RS							= game:GetService("ReplicatedStorage")
-local PLAYER 						= game:GetService("Players").LocalPlayer
+local PS 							= game:GetService("Players").LocalPlayer
 local SG							= game:GetService("StarterGui")
+local SSS							= game:GetService("ServerScriptService")
 
 local ChekingModule 				= require(RS.Shared.Functions.CheckServices)
-local CallNotification 				= RS:WaitForChild("REMOTE_EVENT").CALL_NOTIFICATION
-local CALL_OPENSENDSYSTEM 			= RS:WaitForChild("REMOTE_EVENT").CALL_OPEN_SEND_SYSTEM
-local replicated 					= RS:WaitForChild("REMOTE_FUNCTIONS").FIRE_MONEYTRANFER
+local CallNotification 				= RS:WaitForChild("Remotes").RemoteEvents.CALL_NOTIFICATION
+local CALL_OPENSENDSYSTEM 			= RS:WaitForChild("Remotes").RemoteEvents.CALL_OPEN_SEND_SYSTEM
+local replicated 					= RS:WaitForChild("Remotes").RemoteFunctions.FIRE_MONEYTRANFER
 
 local isButtonPressed: boolean    	= false
 local BREAK_GUI: boolean          	= false
 local LEAVE_MIN_DISTANCE: boolean 	= false
 
-local GET_SEND_PAINEL 				= script.Parent.Parent.SEND_MONEY_PANEL.Background_PANEL
-local CLOSED_GUI 					= script.Parent.Parent.SEND_MONEY_PANEL.Background_PANEL.BACKGROUND_HEADER.Close
-local INPUT_VALUE 					= script.Parent.Parent.SEND_MONEY_PANEL.Background_PANEL.INPUT_VALUE
-local TOTAL_MONEY 					= script.Parent.Parent.SEND_MONEY_PANEL.Background_PANEL.VALUE_MONEY
-local SEND_BOTTOM 					= script.Parent.Parent.SEND_MONEY_PANEL.Background_PANEL.ENVIAR
+local GET_SEND_PAINEL 				= SG.SendMoneyGui.Background_PANEL
+local CLOSED_GUI 					= SG.SendMoneyGui.Background_PANEL.BACKGROUND_HEADER.Close
+local INPUT_VALUE 					= SG.SendMoneyGui.Background_PANEL.INPUT_VALUE
+local TOTAL_MONEY 					= SG.SendMoneyGui.Background_PANEL.VALUE_MONEY
 
-local Money = PLAYER:WaitForChild('leaderstats').Money
 
 function openSendSystem(MODEL)
+	
+	local Get_Money = _G.PlayerData[PS.UserId]
 	
 	GET_SEND_PAINEL.Visible = not GET_SEND_PAINEL.Visible
 	local BREAK_PANEL_GUI 	= false
 
 	INPUT_VALUE.Text = "$ " 
-	TOTAL_MONEY.Text = "$ " .. Money.Value
+	TOTAL_MONEY.Text = "$ " .. Get_Money.Status.Money
 
-	Money.Changed:Connect(function()
-		TOTAL_MONEY.Text = "$ " .. Money.Value
-	end)
 
-	SEND_BOTTOM.MouseButton1Up:Connect(function ()
+	.MouseButton1Up:Connect(function ()
 		local Value = tonumber(INPUT_VALUE.Text) 
 
 		if not Value then return CallNotification:Fire("ERROR", 10, "Erro ao trasnferir", "Valor invalido, favor, digitar um valor valido") end
@@ -52,7 +50,7 @@ function openSendSystem(MODEL)
 	end)
 
 	while true do
-		local CHECK_MIN_DISTANCE = ChekingModule.CHECK_PLAYER_DISTANCE(PLAYER, MODEL)
+		local CHECK_MIN_DISTANCE = ChekingModule.CHECK_PLAYER_DISTANCE(PS, MODEL)
 		if not CHECK_MIN_DISTANCE or BREAK_PANEL_GUI then
 			GET_SEND_PAINEL.Visible = false
 			BREAK_PANEL_GUI 		= true

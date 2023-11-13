@@ -16,7 +16,7 @@ function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER)
 	local Character = Target.Parent
 	local Humanoid =  Character:FindFirstChild("Humanoid")
 	if not Humanoid then return end
-	return Character
+	return Character, Humanoid
 	
 end
 
@@ -30,18 +30,12 @@ function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER, CLASS)
 	return Target
 end
 
-function CHECK_SERVICE.GET_PLAYER_SERVICE(PLAYER)
+function CHECK_SERVICE.GET_PLAYER_SERVICE(PLAYER :Player)
+	
+	local Attribute = PLAYER:GetAttribute("Work") 
+	local JobLists = require(game:GetService("ReplicatedStorage").Shared.Lists.JobLists)
 
-    local JobLists = require(game:GetService("ReplicatedStorage").Shared.Lists.JobLists)
-    local Get_Service_Player = PLAYER.leaderstats.Work
-
-    for i, v in pairs(JobLists) do
-        local ActualWork =  JobLists[i]
-        if ActualWork == Get_Service_Player.Value then
-            return ActualWork
-        end
-    end
-
+	return Attribute
 end
 
 function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
@@ -51,9 +45,10 @@ function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
 end
 
 function CHECK_SERVICE.CHECK_PLAYER_DISTANCE(PLAYER, PLAYER_MODEL)
-    local MaxDistance          = 12
-    local Get_Player           = PLAYER.Character.Head.position
-    local ModelPlayerTwo       = PLAYER_MODEL.PrimaryPart.position
+	local MaxDistance          = 12
+	local Get_Player           = PLAYER.Character.Head.position
+	local ModelPlayerTwo       = PLAYER_MODEL.Head.position
+	
     local PlyersCalculateDistance = ((Get_Player - ModelPlayerTwo).Magnitude)
     if PlyersCalculateDistance <= MaxDistance then
         return true

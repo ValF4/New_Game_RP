@@ -1,6 +1,6 @@
 local player = {} -- Desabilidado
-player.__index = player
 
+player.__index = player
 
 function player.new(name)
     local new = setmetatable({}, player)
@@ -56,48 +56,6 @@ end
 
 function player:getPlayerWork()
     return self.PlayerWork
-end
-
---SETS
-
-function player:setNamePlayer(playerName)
-    self.playerName = playerName
-end
-
-function player:setLifePlayer(playerLife)
-    self.playerLife = playerLife
-end
-
-function player:SetExperiencePlayerLevel(PlayerLevel)
-    self.playerLevel = PlayerLevel
-end
-
-function player:setExperiencePlayer(experiencePlayerLevel)
-    self.experiencePlayerLevel = experiencePlayerLevel
-end
-
-function player:setPlayerHunger(playerHunger)
-    self.playerHunger = playerHunger
-end
-
-function player:setPlayerThirst(playerThirst)
-    self.playerThirst = playerThirst
-end
-
-function player:setPlayerMoneyWallet(playerMoneyWallet)
-    self.playerMoneyWallet = playerMoneyWallet
-end
-
-function player:setPlayerMoneyBank(playerMoneyBank)
-    self.playerMoneyBank = playerMoneyBank
-end
-
-function player:setPlayerMoneyDirty(playerMoneyDirty)
-    self.playerMoneyDirty = playerMoneyDirty
-end
-
-function player:setPlayerWork(PlayerWork)
-    self.PlayerWork = PlayerWork
 end
 
 return player

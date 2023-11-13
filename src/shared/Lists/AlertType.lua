@@ -23,6 +23,7 @@ local AleryType = {
 		["ID_ICON"]			 = "rbxassetid://15319063430";
 		["Icon_Color"]		 = Color3.fromRGB(16, 37, 74);
 	};
+	
 }
 
 return AleryType
