@@ -20,22 +20,31 @@ function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER)
 	
 end
 
-function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER, CLASS)
+function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
 	local Mouse = PLAYER:GetMouse()
 	local Target = Mouse.Target
 	
 	if not Target then return end
-    local Check_Atribute = Target:GetAttribute(CLASS)
+    local Check_Atribute = Target:GetAttribute("Type")
     if not Check_Atribute then return end
-	return Target
+	return Check_Atribute
 end
 
 function CHECK_SERVICE.GET_PLAYER_SERVICE(PLAYER :Player)
-	
 	local Attribute = PLAYER:GetAttribute("Work") 
-	local JobLists = require(game:GetService("ReplicatedStorage").Shared.Lists.JobLists)
-
 	return Attribute
+end
+
+function CHECK_SERVICE.CHECK_NPC(MODEL)
+	local PS = game:GetService("Players")
+
+	local ModelLocalizePlayer =  PS:GetPlayerFromCharacter(MODEL)
+	if not ModelLocalizePlayer then
+		local CheckNPCAtribute = MODEL:GetAttribute("NPC")
+		return CheckNPCAtribute
+	else
+		return false
+	end
 end
 
 function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
