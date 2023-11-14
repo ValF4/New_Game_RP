@@ -49,7 +49,7 @@ function openSendSystem(MODEL)
 	end)
 
 	while true do
-		local CHECK_MIN_DISTANCE = ChekingModule.CHECK_PLAYER_DISTANCE(PS, MODEL)
+		local CHECK_MIN_DISTANCE = ChekingModule.CHECK_DISTANCE_ITEM(PS, MODEL)
 		if not CHECK_MIN_DISTANCE or BreakLoop then
 			PS:SetAttribute("Panel", nil)
 			SendMoneyBackground.Visible = false

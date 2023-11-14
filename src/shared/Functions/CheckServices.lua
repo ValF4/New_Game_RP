@@ -8,43 +8,39 @@ function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
     end
 end
 
-function CHECK_SERVICE.PLAYER_ON_TOP_MOUSE(PLAYER)
-	local Mouse = PLAYER:GetMouse()
-	local Target = Mouse.Target
-	
-	if not Target then return end
-	local Character = Target.Parent
-	local Humanoid =  Character:FindFirstChild("Humanoid")
-	if not Humanoid then return end
-	return Character, Humanoid
-	
-end
-
 function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
+	local PS = game:GetService("Players")
+
 	local Mouse = PLAYER:GetMouse()
 	local Target = Mouse.Target
-	
+
 	if not Target then return end
-    local Check_Atribute = Target:GetAttribute("Type")
-    if not Check_Atribute then return end
-	return Check_Atribute
+	
+	local Check_Atributes = Target:GetAttributes()
+	--local Check_Atribute = Target:GetAttribute("Type")
+
+	if Check_Atributes["Type"] then
+		return Target, Check_Atributes
+	end
+
+	local Character = Target.Parent
+
+	if not PS:GetPlayerFromCharacter(Character) then -- NPC e ATM
+		local GetAttribute = Character:GetAttributes()
+		if not GetAttribute["Type"] then return end
+		return Character, GetAttribute
+		
+	elseif PS:GetPlayerFromCharacter(Character) then -- Players
+		
+		local Humanoid =  Character:FindFirstChild("Humanoid")
+		if not Humanoid then return end
+		return Character
+	end
 end
 
 function CHECK_SERVICE.GET_PLAYER_SERVICE(PLAYER :Player)
-	local Attribute = PLAYER:GetAttribute("Work") 
+	local Attribute = PLAYER:GetAttribute("Work")
 	return Attribute
-end
-
-function CHECK_SERVICE.CHECK_NPC(MODEL)
-	local PS = game:GetService("Players")
-
-	local ModelLocalizePlayer =  PS:GetPlayerFromCharacter(MODEL)
-	if not ModelLocalizePlayer then
-		local CheckNPCAtribute = MODEL:GetAttribute("NPC")
-		return CheckNPCAtribute
-	else
-		return false
-	end
 end
 
 function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
@@ -53,13 +49,11 @@ function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
     return pos
 end
 
-function CHECK_SERVICE.CHECK_PLAYER_DISTANCE(PLAYER, PLAYER_MODEL)
+function CHECK_SERVICE.CHECK_DISTANCE_ITEM(PLAYER, ITENS:Model)
 	local MaxDistance          = 12
-	local Get_Player           = PLAYER.Character.Head.position
-	local ModelPlayerTwo       = PLAYER_MODEL.Head.position
-	
-    local PlyersCalculateDistance = ((Get_Player - ModelPlayerTwo).Magnitude)
-    if PlyersCalculateDistance <= MaxDistance then
+	local ModelPlayerTwo       = ITENS:GetPivot().Position	
+
+	if PLAYER:DistanceFromCharacter(ModelPlayerTwo) <= MaxDistance then
         return true
     end
         return false
