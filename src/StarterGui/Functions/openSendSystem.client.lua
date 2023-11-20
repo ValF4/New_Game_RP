@@ -4,9 +4,10 @@ local SG							= PS:WaitForChild("PlayerGui")
 local SSS							= game:GetService("ServerScriptService")
 
 local ChekingModule 				= require(RS.Shared.Functions.CheckServices)
-local CallNotification 				= RS:WaitForChild("Remotes").RemoteEvents.CALL_NOTIFICATION
-local CALL_OPENSENDSYSTEM 			= RS:WaitForChild("Remotes").RemoteEvents.CALL_OPEN_SEND_SYSTEM
-local replicated 					= RS:WaitForChild("Remotes").RemoteFunctions.FIRE_MONEY_TRANFERER
+local CallNotification 				= RS:WaitForChild("Remotes").RemoteEvents.CallNotification
+local CALL_OPENSENDSYSTEM 			= RS:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
+local replicated 					= RS:WaitForChild("Remotes").RemoteFunctions.FireMoneyTranferer
+local DataService 					= RS:WaitForChild("Remotes").RemoteFunctions.FireDataServices
 
 local GUISendMoney 					= SG.SendMoneyGui
 local SendMoneyBackground			= GUISendMoney.Background_PANEL
@@ -19,16 +20,16 @@ local CloseBottonPanel				= SendMoneyBackground.BACKGROUND_HEADER.Close
 function openSendSystem(MODEL)
 	local BreakLoop: boolean = false
 	PS:SetAttribute("Panel", true)
-	SendMoneyBackground.Visible = true
-
-	--local My_Data = _G.PlayerData[PS.UserId]
 	
-	TextMoneyPanel.Text = "$ " .. PS:GetAttribute("Money")
+	SendMoneyBackground.Visible = true
+	local GetDataPlayer = DataService:InvokeServer(PS)
+	
+	TextMoneyPanel.Text = "$ " .. GetDataPlayer.Money
 	SendMoneyInput.Text = "$ "
 
-	TextMoneyPanel.InputBegan:Connect(function()
-		TextMoneyPanel.Text = "$ " .. PS:GetAttribute("Money")
-	end)
+	--TextMoneyPanel.InputBegan:Connect(function()
+	--	TextMoneyPanel.Text = "$ " .. PS:GetAttribute("Money")
+	--end)
 
 	SendBottonConfirm.MouseButton1Up:Connect(function ()
 		local Value = tonumber(SendMoneyInput.Text)
@@ -43,7 +44,6 @@ function openSendSystem(MODEL)
 	end)
 
 	CloseBottonPanel.MouseButton1Up:Connect(function()
-		PS:SetAttribute("Panel", nil)
 		BreakLoop = true
 		SendMoneyBackground.Visible = false
 	end)

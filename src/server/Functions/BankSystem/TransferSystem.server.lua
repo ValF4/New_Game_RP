@@ -1,8 +1,8 @@
 local RS	= game:GetService("ReplicatedStorage")
 local PS 	= game:GetService("Players")
 
-local CN	= RS:WaitForChild("Remotes").RemoteEvents.CALL_NOTIFICATION
-local rs	= RS:WaitForChild("Remotes").RemoteFunctions.FIRE_MONEY_TRANFERER
+local CN	= RS:WaitForChild("Remotes").RemoteEvents.CallNotification
+local rs	= RS:WaitForChild("Remotes").RemoteFunctions.FireMoneyTranferer
 
 local db = {}
 

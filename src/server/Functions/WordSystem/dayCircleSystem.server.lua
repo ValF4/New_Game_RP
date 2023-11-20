@@ -1,6 +1,6 @@
-local time =  350
+local time =  400
 
 while task.wait(.1) do
     game.Lighting:SetMinutesAfterMidnight(time)
-    time += .1
+    time += .01
 end

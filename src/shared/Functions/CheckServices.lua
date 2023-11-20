@@ -12,35 +12,41 @@ function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
 	local PS = game:GetService("Players")
 
 	local Mouse = PLAYER:GetMouse()
-	local Target = Mouse.Target
+	local Target : Instance= Mouse.Target
 
 	if not Target then return end
 	
-	local Check_Atributes = Target:GetAttributes()
-	--local Check_Atribute = Target:GetAttribute("Type")
-
-	if Check_Atributes["Type"] then
-		return Target, Check_Atributes
-	end
-
-	local Character = Target.Parent
-
-	if not PS:GetPlayerFromCharacter(Character) then -- NPC e ATM
-		local GetAttribute = Character:GetAttributes()
+	local Model = Target:FindFirstAncestorOfClass("Model")
+	if not Model then return end
+	
+	if not PS:GetPlayerFromCharacter(Model) then -- NPC and ATM
+		local GetAttribute = Model:GetAttributes()
 		if not GetAttribute["Type"] then return end
-		return Character, GetAttribute
-		
-	elseif PS:GetPlayerFromCharacter(Character) then -- Players
-		
-		local Humanoid =  Character:FindFirstChild("Humanoid")
+		return Model, GetAttribute
+	else  -- Players
+		local Humanoid =  Model:FindFirstChild("Humanoid")
 		if not Humanoid then return end
-		return Character
+		return Model
 	end
 end
 
 function CHECK_SERVICE.GET_PLAYER_SERVICE(PLAYER :Player)
-	local Attribute = PLAYER:GetAttribute("Work")
-	return Attribute
+	local RS			= game:GetService("ReplicatedStorage")
+	local DataService 	= RS:WaitForChild("Remotes").RemoteFunctions.FireDataServices
+	local GetJob 	    = DataService:InvokeServer(PLAYER)
+	return GetJob.Work
+end
+
+function CHECK_SERVICE.GET_TIME()
+	local Time = game:GetService("Lighting").ClockTime
+	
+	if Time == 18 or Time <= 6 then
+		return "Boa noite"
+	elseif Time == 6 or Time <= 12 then
+		return "Bom dia"
+	elseif Time == 12 or Time <= 18 then
+		return "Boa tarde"
+	end
 end
 
 function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
@@ -49,9 +55,9 @@ function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
     return pos
 end
 
-function CHECK_SERVICE.CHECK_DISTANCE_ITEM(PLAYER, ITENS:Model)
+function CHECK_SERVICE.CHECK_DISTANCE_ITEM(PLAYER, ITENS)
 	local MaxDistance          = 12
-	local ModelPlayerTwo       = ITENS:GetPivot().Position	
+	local ModelPlayerTwo       = ITENS:GetPivot().Position
 
 	if PLAYER:DistanceFromCharacter(ModelPlayerTwo) <= MaxDistance then
         return true
