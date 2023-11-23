@@ -3,11 +3,17 @@ local PS 							= game:GetService("Players").LocalPlayer
 local SG							= PS:WaitForChild("PlayerGui")
 local SSS							= game:GetService("ServerScriptService")
 
-local ChekingModule 				= require(RS.Shared.Functions.CheckServices)
+local Assets 		 				= RS:WaitForChild("Remotes")
+
+local Modules  						= Assets:WaitForChild("Modules")
+local Networks 		 				= Assets:WaitForChild("Network")
+
+local CD 							= require(Modules.ClientData)
+local CM 							= require(RS.Shared.Functions.CheckServices)
+
 local CallNotification 				= RS:WaitForChild("Remotes").RemoteEvents.CallNotification
 local CALL_OPENSENDSYSTEM 			= RS:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
 local replicated 					= RS:WaitForChild("Remotes").RemoteFunctions.FireMoneyTranferer
-local DataService 					= RS:WaitForChild("Remotes").RemoteFunctions.FireDataServices
 
 local GUISendMoney 					= SG.SendMoneyGui
 local SendMoneyBackground			= GUISendMoney.Background_PANEL
@@ -22,14 +28,14 @@ function openSendSystem(MODEL)
 	PS:SetAttribute("Panel", true)
 	
 	SendMoneyBackground.Visible = true
-	local GetDataPlayer = DataService:InvokeServer(PS)
+	local GetDataPlayer = CD.get(PS)
 	
-	TextMoneyPanel.Text = "$ " .. GetDataPlayer.Money
+	TextMoneyPanel.Text = "$ " ..GetDataPlayer.Money
 	SendMoneyInput.Text = "$ "
 
-	--TextMoneyPanel.InputBegan:Connect(function()
-	--	TextMoneyPanel.Text = "$ " .. PS:GetAttribute("Money")
-	--end)
+	TextMoneyPanel.InputBegan:Connect(function()
+		TextMoneyPanel.Text = "$ " .. GetDataPlayer.Money
+	end)
 
 	SendBottonConfirm.MouseButton1Up:Connect(function ()
 		local Value = tonumber(SendMoneyInput.Text)
@@ -49,7 +55,7 @@ function openSendSystem(MODEL)
 	end)
 
 	while true do
-		local CHECK_MIN_DISTANCE = ChekingModule.CHECK_DISTANCE_ITEM(PS, MODEL)
+		local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PS, MODEL)
 		if not CHECK_MIN_DISTANCE or BreakLoop then
 			PS:SetAttribute("Panel", nil)
 			SendMoneyBackground.Visible = false

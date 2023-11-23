@@ -2,22 +2,21 @@ local RS 	:ReplicatedStorage 	= game:GetService("ReplicatedStorage")
 
 local OSS	:RemoteEvent 		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
 local COBM 	:RemoteEvent		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
-local COBM 	:RemoteEvent		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
 local COR 	:RemoteEvent 		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
 
 local Bottons = {
 
 	Civilian = {
-		["Transferir"] = function(Parametros)
-			OSS:Fire(Parametros.Model)
+		["Transferir"] = function(...)
+			OSS:Fire(...)
 		end;
 
 		["Fechar"] = function() return end; 
 	};
 
 	Emergency = {
-		["Transferir"] = function(Parametros)
-			OSS:Fire(Parametros.Model)
+		["Transferir"] = function(...)
+			OSS:Fire(...)
 		end;
 		["Reviver"] = function() return end; 
 		["Iniciar Tratamento"] = function() return end;
@@ -25,8 +24,8 @@ local Bottons = {
 	};
 
 	Police = {
-		["Transferir"] = function(Parametros)
-			OSS:Fire(Parametros.Model)
+		["Transferir"] = function(...)
+			OSS:Fire(...)
 		end;
 		["Algemar"] = function() return end;
 		["Revistar"] = function() return end;
@@ -37,8 +36,8 @@ local Bottons = {
 	NPC = {
 
 		Rosana = {
-			["Registrar-se"] = function (Parametros)
-				COR:fire(Parametros.Model)
+			["Registrar-se"] = function (...)
+				COR:fire(...)
 			end;
 			
 			["Fechar"] = function () return end
@@ -47,8 +46,8 @@ local Bottons = {
 	};
 
 	ATM = {
-		["Acessar banco"] = function(Parametros)
-			COBM:Fire(Parametros.Player, Parametros.Model)
+		["Acessar banco"] = function(...)
+			COBM:Fire(...)
 		end;
 
 		["Fechar"] = function() return end;

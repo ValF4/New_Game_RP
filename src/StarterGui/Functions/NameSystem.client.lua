@@ -1,14 +1,14 @@
-local PLR = game:GetService("Players").LocalPlayer
-local PG  = PLR:WaitForChild("PlayerGui")
+local PLR :Player				 = game:GetService("Players").LocalPlayer
+local PG  :PlayerGui			 = PLR:WaitForChild("PlayerGui")
 
-local RS 	:ReplicatedStorage 	= game:GetService("ReplicatedStorage")
-local CN 			            = RS:WaitForChild("Remotes").RemoteEvents.CallNotification
-local COR 	:RemoteEvent 		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
-local CHNS	:RemoteFunction 	= RS:WaitForChild("Remotes").RemoteFunctions.CityHallNameSet
+local RS 	:ReplicatedStorage 	 = game:GetService("ReplicatedStorage")
+local CN 	:RemoteEvent		 = RS:WaitForChild("Remotes").RemoteEvents.CallNotification
+local COR 	:RemoteEvent 		 = RS:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
+local CHNS	:RemoteFunction 	 = RS:WaitForChild("Remotes").RemoteFunctions.CityHallNameSet
 
-local ChekingModule 			= require(RS.Shared.Functions.CheckServices)
+local CM 			 			 = require(RS.Shared.Functions.CheckServices)
 
-local Backgorund = PG:WaitForChild("NameGui").Background
+local Backgorund 				 = PG:WaitForChild("NameGui").Background
 
 local ConfirmButton :TextButton  = Backgorund.Button
 local TextImput 	:TextBox 	 = Backgorund.TextBox
@@ -37,7 +37,7 @@ function OpenRegister(Model)
 	end)
 	
 	while true do
-		local CHECK_MIN_DISTANCE = ChekingModule.CHECK_DISTANCE_ITEM(PLR, Model)
+		local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PLR, Model.Model)
 		if not CHECK_MIN_DISTANCE or BreakLoop then
 			PLR:SetAttribute("Panel", nil)
 			Backgorund.Visible = false

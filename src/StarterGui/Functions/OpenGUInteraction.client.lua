@@ -1,20 +1,23 @@
-local UIS 	= game:GetService("UserInputService")
-local RS	= game:GetService("ReplicatedStorage")
-local PLR	= game:GetService("Players").LocalPlayer
-local PG    = PLR:WaitForChild("PlayerGui")
+local UIS 			= game:GetService("UserInputService")
+local RS			= game:GetService("ReplicatedStorage")
+local PLR			= game:GetService("Players").LocalPlayer
+local Modules 		= RS:WaitForChild("Remotes").Modules
+local Network 		= RS:WaitForChild("Remotes").Network
 
+local PG    = PLR:WaitForChild("PlayerGui")
+local IQ    = PG:WaitForChild("PlayerInteractionGui")
 local Mouse = PLR:GetMouse()
 
 local CM  	= require(RS.Shared.Functions.CheckServices)
 local BL	= require(RS.Shared.Lists.BottonList)
+local CD	= require(Modules.ClientData)
 
-local InteractionGUI    = PG:WaitForChild("PlayerInteractionGui")
-local Interaction_Frame = InteractionGUI.ScrollingFrame
+local Interaction_Frame = IQ.ScrollingFrame
 
 local isButtonPressed: boolean = false
 local BreakLoop: boolean = false
 
-local CloneButton = InteractionGUI.Botton
+local CloneButton = IQ.Botton
 
 local Atribute
 local Model
@@ -31,32 +34,37 @@ function CloseButton()
 end
 
 function CloneBotton (PlayerAtribute, Work, Model, PLR)
-	local Parametros = {Player = PLR, Model = Model}
+	local Parametros = {Model = Model}
+	local n = 0
 	if not PlayerAtribute then
 		for NameBotton, Functions in pairs(BL[Work]) do
 			local Bottons = CloneButton:Clone()
-			Bottons.Name = 1
+			Bottons.Name = n
 			Bottons.Text = NameBotton
 			Bottons.Parent = Interaction_Frame
 			Bottons.Visible = true
+			Bottons.LayoutOrder = n
 			Bottons.MouseButton1Up:Connect(function()
 					Functions(Parametros)
 					CloseButton()
 			end)
+			n += 1
  		end
 	else
 		local Type = Atribute["Type"]
-		local SubType = Atribute.SubType 
+		local SubType = Atribute.SubType
 		for NameBotton, Functions in pairs(SubType and BL[Type][SubType] or BL[Type]) do
 			local IButtons = CloneButton:Clone()
-			IButtons.Name = 1
+			IButtons.Name = n
 			IButtons.Text = NameBotton
 			IButtons.Parent = Interaction_Frame
 			IButtons.Visible = true
+			IButtons.LayoutOrder = n
 			IButtons.MouseButton1Up:Connect(function()
 				Functions(Parametros)
 				CloseButton()
 			end)
+			n += 1
 		end
 	end
 end
@@ -76,12 +84,12 @@ UIS.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
 			
 				local CHECK_DISTANCE_PLAYERS = CM.CHECK_DISTANCE_ITEM(PLR, Model)
 				isButtonPressed = true
-				local GET_WORK_PLAYER = CM.GET_PLAYER_SERVICE(PLR)
+				local GET_WORK_PLAYER = CD.get(PLR)
 
 				Interaction_Frame.Position 	= UDim2.new(0, Mouse.X, 0, Mouse.Y)
 				Interaction_Frame.Visible 	= true
 				
-				CloneBotton(Atribute, GET_WORK_PLAYER, Model, PLR)
+				CloneBotton(Atribute, GET_WORK_PLAYER.Work, Model, PLR)
 				
 				while true do
 					local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PLR, Model)

@@ -1,4 +1,4 @@
-local time =  400
+local time :IntValue =  400
 
 while task.wait(.1) do
     game.Lighting:SetMinutesAfterMidnight(time)

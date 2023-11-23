@@ -1,9 +1,9 @@
-local RS						= game:GetService("ReplicatedStorage")
+local RS	:ReplicatedStorage	= game:GetService("ReplicatedStorage")
 
 local CHNS	:RemoteFunction 	= RS:WaitForChild("Remotes").RemoteFunctions.CityHallNameSet
-local DB						= require(game:GetService("ServerScriptService").ServerData)
+local DB	:ModuleScript		= require(game:GetService("ServerScriptService").ServerData)
 
-local db = {}
+local db :table = {}
 
 CHNS.OnServerInvoke = function (PLR, NewName)
 	if db[PLR.UserId] and tick() - db[PLR.UserId]  < .4 then return end db[PLR.UserId]  = tick()
