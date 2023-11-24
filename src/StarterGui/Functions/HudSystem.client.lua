@@ -1,31 +1,31 @@
-local PS 		= game:GetService("Players").LocalPlayer
-local SG		= PS:WaitForChild("PlayerGui")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local PlayerGui	  = LocalPlayer:WaitForChild("PlayerGui")
 
-local RS		= game:GetService("ReplicatedStorage")
-local SSS		= game:GetService("ServerScriptService")
+local ReplicatedStorage		= game:GetService("ReplicatedStorage")
+local ServerScriptService	= game:GetService("ServerScriptService")
 
-local Assets 	= RS:WaitForChild("Remotes")
+local Remotes 	= ReplicatedStorage:WaitForChild("Remotes")
 
-local Modules   = Assets:WaitForChild("Modules")
-local Networks  = Assets:WaitForChild("Network")
+local Modules   = Remotes:WaitForChild("Modules")
+local Networks  = Remotes:WaitForChild("Network")
 
-local CD 		= require(Modules.ClientData)
+local ClientData = require(Modules.ClientData)
 
-local Hud       = SG:WaitForChild("Hud")
+local Hud = PlayerGui:WaitForChild("Hud")
 
-local Header    = Hud:WaitForChild("Header")
+local Header = Hud:WaitForChild("Header")
 
 local LevelLabel = Header.LevelFrame.LevelLabel
 local MoneyLabel = Header.MoneyFrame.MoneyLabel
 local PVLabel = Header.MoneyFrame.PVLabel
 
-local GetData = CD.get(PS)
+local GetData = ClientData.get(LocalPlayer)
 
 LevelLabel.Text = GetData.Level
 MoneyLabel.Text = GetData.Money .. " $"
 PVLabel.Text    = GetData.BankMoney .. " $"
 
-CD.profileChanged.Event:Connect(function()
+ClientData.profileChanged.Event:Connect(function()
     LevelLabel.Text = GetData.Level
     MoneyLabel.Text = GetData.Money .. " $"
     PVLabel.Text    = GetData.BankMoney .. " $"

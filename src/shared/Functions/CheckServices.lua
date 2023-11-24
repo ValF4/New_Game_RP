@@ -1,3 +1,10 @@
+local ReplicatedStorage	= game:GetService("ReplicatedStorage")
+
+local Modules 	= ReplicatedStorage:WaitForChild("Remotes").Modules
+local Network 	= ReplicatedStorage:WaitForChild("Remotes").Network
+
+local DataService	= require(Modules.ClientData)
+
 local CHECK_SERVICE = {}
 
 function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
@@ -8,8 +15,10 @@ function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
 	end
 end
 
+function CHECK_SERVICE.GET_PLAYER_WORK(Player) return DataService.get(Player).Work end
+
 function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
-	local PS = game:GetService("Players")
+	local Players = game:GetService("Players")
 
 	local Mouse = PLAYER:GetMouse()
 	local Target : Instance= Mouse.Target
@@ -19,7 +28,7 @@ function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
 	local Model = Target:FindFirstAncestorOfClass("Model")
 	if not Model then return end
 
-	if not PS:GetPlayerFromCharacter(Model) then -- NPC and ATM
+	if not Players:GetPlayerFromCharacter(Model) then -- NPC and ATM
 		local GetAttribute = Model:GetAttributes()
 		if not GetAttribute["Type"] then return end
 		return Model, GetAttribute
@@ -31,20 +40,20 @@ function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
 end
 
 function CHECK_SERVICE.GET_TIME()
-	local Time = game:GetService("Lighting").ClockTime
+	local GetTime = game:GetService("Lighting").ClockTime
 
-	if Time == 18 or Time <= 6 then
+	if GetTime == 18 or GetTime <= 6 then
 		return "Boa noite"
-	elseif Time == 6 or Time <= 12 then
+	elseif GetTime == 6 or GetTime <= 12 then
 		return "Bom dia"
-	elseif Time == 12 or Time <= 18 then
+	elseif GetTime == 12 or GetTime <= 18 then
 		return "Boa tarde"
 	end
 end
 
 function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
-	local Get_Player = PLAYER.Character.Head.position
-	local pos = {math.floor(Get_Player.X), math.floor(Get_Player.Y), math.floor(Get_Player.Z)}
+	local GetPlayerPossition = PLAYER.Character.Head.position
+	local pos = {math.floor(GetPlayerPossition.X), math.floor(GetPlayerPossition.Y), math.floor(GetPlayerPossition.Z)}
 	return pos
 end
 

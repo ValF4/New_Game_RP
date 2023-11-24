@@ -1,23 +1,23 @@
-local PLR :Player				 = game:GetService("Players").LocalPlayer
-local PG  :PlayerGui			 = PLR:WaitForChild("PlayerGui")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local PlayerGui   = LocalPlayer:WaitForChild("PlayerGui")
 
-local RS 	:ReplicatedStorage 	 = game:GetService("ReplicatedStorage")
-local CN 	:RemoteEvent		 = RS:WaitForChild("Remotes").RemoteEvents.CallNotification
-local COR 	:RemoteEvent 		 = RS:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
-local CHNS	:RemoteFunction 	 = RS:WaitForChild("Remotes").RemoteFunctions.CityHallNameSet
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CallNotification	= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallNotification
+local CallOpenRegister	= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
+local CityHallNameSet	= ReplicatedStorage:WaitForChild("Remotes").RemoteFunctions.CityHallNameSet
 
-local CM 			 			 = require(RS.Shared.Functions.CheckServices)
+local CheckServices = require(ReplicatedStorage.Shared.Functions.CheckServices)
 
-local Backgorund 				 = PG:WaitForChild("NameGui").Background
+local Backgorund = PlayerGui:WaitForChild("NameGui").Background
 
-local ConfirmButton :TextButton  = Backgorund.Button
-local TextImput 	:TextBox 	 = Backgorund.TextBox
-local CloseButton 	:ImageButton = Backgorund.Cabecario.cross
+local ConfirmButton = Backgorund.Button
+local TextImput 	= Backgorund.TextBox
+local CloseButton 	= Backgorund.Cabecario.cross
 
 function OpenRegister(Model)
 	local BreakLoop :boolean = false
 	
-	PLR:SetAttribute("Panel", true)
+	LocalPlayer:SetAttribute("Panel", true)
 	Backgorund.Visible = true
 	
 	CloseButton.MouseButton1Down:Connect(function()
@@ -27,19 +27,19 @@ function OpenRegister(Model)
 	ConfirmButton.MouseButton1Down:Connect(function()
 		local GetValue = tostring(TextImput.Text)
 		if GetValue == "" then
-			CN:Fire("Nome invalido:", "Verifique o nome digitado e tente novamente", "ERROR", 5)
+			CallNotification:Fire("Nome invalido:", "Verifique o nome digitado e tente novamente", "ERROR", 5)
 		else
-			local ReturnResponse = CHNS:InvokeServer(GetValue)
+			local ReturnResponse = CityHallNameSet:InvokeServer(GetValue)
 			if ReturnResponse then
-				CN:Fire("Nome Registrado:", "Nome registrado com sucesso, parabens", "SUCCESS", 5)
+				CallNotification:Fire("Nome Registrado:", "Nome registrado com sucesso, parabens", "SUCCESS", 5)
 			end
 		end
 	end)
 	
 	while true do
-		local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PLR, Model.Model)
+		local CHECK_MIN_DISTANCE = CheckServices.CHECK_DISTANCE_ITEM(LocalPlayer, Model.Model)
 		if not CHECK_MIN_DISTANCE or BreakLoop then
-			PLR:SetAttribute("Panel", nil)
+			LocalPlayer:SetAttribute("Panel", nil)
 			Backgorund.Visible = false
 			break
 		end
@@ -47,6 +47,6 @@ function OpenRegister(Model)
 	end
 end
 
-COR.Event:Connect(OpenRegister)
+CallOpenRegister.Event:Connect(OpenRegister)
 
 

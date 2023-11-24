@@ -18,9 +18,6 @@ function DepositSystem(Plr, Value)
 		PlayerData.BankMoney += Value
 		CN:FireClient(Plr, "Deposito Realizado:", "Seu deposito no valor de $ " ..Value.. " foi realizado com sucesso", "SUCCESS", 5)
 	end
-
-
-
 end
 
 CDS.OnServerEvent:Connect(function(Player, Value) DepositSystem(Player, Value) end)

@@ -1,23 +1,20 @@
-local UIS 			= game:GetService("UserInputService")
-local RS			= game:GetService("ReplicatedStorage")
-local PLR			= game:GetService("Players").LocalPlayer
-local Modules 		= RS:WaitForChild("Remotes").Modules
-local Network 		= RS:WaitForChild("Remotes").Network
+local UserInputService  = game:GetService("UserInputService")
+local ReplicatedStorage	= game:GetService("ReplicatedStorage")
+local LocalPlayer		= game:GetService("Players").LocalPlayer
 
-local PG    = PLR:WaitForChild("PlayerGui")
-local IQ    = PG:WaitForChild("PlayerInteractionGui")
-local Mouse = PLR:GetMouse()
+local PlayerGui 		   = LocalPlayer:WaitForChild("PlayerGui")
+local PlayerInteractionGui = PlayerGui:WaitForChild("PlayerInteractionGui")
+local GetMouse 			   = LocalPlayer:GetMouse()
 
-local CM  	= require(RS.Shared.Functions.CheckServices)
-local BL	= require(RS.Shared.Lists.BottonList)
-local CD	= require(Modules.ClientData)
+local CheckServices = require(ReplicatedStorage.Shared.Functions.CheckServices)
+local BottonList	= require(ReplicatedStorage.Shared.Lists.BottonList)
 
-local Interaction_Frame = IQ.ScrollingFrame
+local Interaction_Frame = PlayerInteractionGui.ScrollingFrame
 
 local isButtonPressed: boolean = false
 local BreakLoop: boolean = false
 
-local CloneButton = IQ.Botton
+local CloneButton = PlayerInteractionGui.Botton
 
 local Atribute
 local Model
@@ -37,7 +34,7 @@ function CloneBotton (PlayerAtribute, Work, Model, PLR)
 	local Parametros = {Model = Model}
 	local n = 0
 	if not PlayerAtribute then
-		for NameBotton, Functions in pairs(BL[Work]) do
+		for NameBotton, Functions in pairs(BottonList[Work]) do
 			local Bottons = CloneButton:Clone()
 			Bottons.Name = n
 			Bottons.Text = NameBotton
@@ -53,7 +50,7 @@ function CloneBotton (PlayerAtribute, Work, Model, PLR)
 	else
 		local Type = Atribute["Type"]
 		local SubType = Atribute.SubType
-		for NameBotton, Functions in pairs(SubType and BL[Type][SubType] or BL[Type]) do
+		for NameBotton, Functions in pairs(SubType and BottonList[Type][SubType] or BottonList[Type]) do
 			local IButtons = CloneButton:Clone()
 			IButtons.Name = n
 			IButtons.Text = NameBotton
@@ -69,30 +66,28 @@ function CloneBotton (PlayerAtribute, Work, Model, PLR)
 	end
 end
 
-UIS.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
+UserInputService.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
 	
 	local PRESSKEY 		= Enum.UserInputType.MouseButton1
-	local CEKING_CLICK 	= CM.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
+	local CEKING_CLICK 	= CheckServices.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
 	
-	if not PLR:GetAttribute("Panel") then
+	if not LocalPlayer:GetAttribute("Panel") then
 		
 		if CEKING_CLICK and not isButtonPressed then
 			
-			Model, Atribute = CM.ON_TOP_MOUSE(PLR)
+			Model, Atribute = CheckServices.ON_TOP_MOUSE(LocalPlayer)
 			
 			if Model then
-			
-				local CHECK_DISTANCE_PLAYERS = CM.CHECK_DISTANCE_ITEM(PLR, Model)
 				isButtonPressed = true
-				local GET_WORK_PLAYER = CD.get(PLR)
+				local PlayerJob = CheckServices.GET_PLAYER_WORK(LocalPlayer)
 
-				Interaction_Frame.Position 	= UDim2.new(0, Mouse.X, 0, Mouse.Y)
+				Interaction_Frame.Position 	= UDim2.new(0, GetMouse.X, 0, GetMouse.Y)
 				Interaction_Frame.Visible 	= true
 				
-				CloneBotton(Atribute, GET_WORK_PLAYER.Work, Model, PLR)
+				CloneBotton(Atribute, PlayerJob, Model, LocalPlayer)
 				
 				while true do
-					local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PLR, Model)
+					local CHECK_MIN_DISTANCE = CheckServices.CHECK_DISTANCE_ITEM(LocalPlayer, Model)
 					if not CHECK_MIN_DISTANCE or BreakLoop then
 						CloseButton()
 						BreakLoop = false
@@ -101,7 +96,6 @@ UIS.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
 					end
 					task.wait(1)
 				end
-				
 			end
 		end
 	end

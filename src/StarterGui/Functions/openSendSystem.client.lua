@@ -43,10 +43,8 @@ function openSendSystem(MODEL)
 		if not Value then return CallNotification:Fire("Erro na Transferencia:", "Valor invalido, favor, digitar um valor valido", "ERROR", 5) end
 
 		if Value <= 0 then return CallNotification:Fire("Erro na Transferencia:", "Valor invalido, favor, digitar um valor valido", "ERROR", 5) end
-
-		local INVOKE_BANK_SYSTEM = replicated:InvokeServer(MODEL, Value)
-		
-		if INVOKE_BANK_SYSTEM then CallNotification:Fire("Transferencia finalizada:", "Valor o valor de $" ..Value.. " foi transferida com sucesso", "SUCCESS", 5) end
+        print(MODEL.Model)
+		replicated:InvokeServer(MODEL.Model, Value)
 	end)
 
 	CloseBottonPanel.MouseButton1Up:Connect(function()
@@ -55,7 +53,7 @@ function openSendSystem(MODEL)
 	end)
 
 	while true do
-		local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PS, MODEL)
+		local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PS, MODEL.Model)
 		if not CHECK_MIN_DISTANCE or BreakLoop then
 			PS:SetAttribute("Panel", nil)
 			SendMoneyBackground.Visible = false

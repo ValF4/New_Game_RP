@@ -19,7 +19,6 @@ function withdrawSystem(Plr, Value)
 		CN:FireClient(Plr, "Saque Realizado:", "Seu saque no valor de $ " ..Value.. " foi realizado com sucesso", "SUCCESS", 5)
 	end
 
-
 end
 
 CWS.OnServerEvent:Connect(function(Player, Value) withdrawSystem(Player, Value) end)

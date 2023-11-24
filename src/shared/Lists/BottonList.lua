@@ -1,14 +1,14 @@
-local RS 	:ReplicatedStorage 	= game:GetService("ReplicatedStorage")
+local ReplicatedStorage :ReplicatedStorage 	= game:GetService("ReplicatedStorage")
 
-local OSS	:RemoteEvent 		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
-local COBM 	:RemoteEvent		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
-local COR 	:RemoteEvent 		= RS:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
+local OpenSendSystem	:RemoteEvent 		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
+local CallOpenBankMenu 	:RemoteEvent		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
+local CallOpenRegister 	:RemoteEvent 		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
 
 local Bottons = {
 
 	Civilian = {
 		["Transferir"] = function(...)
-			OSS:Fire(...)
+			OpenSendSystem:Fire(...)
 		end;
 
 		["Fechar"] = function() return end; 
@@ -16,7 +16,7 @@ local Bottons = {
 
 	Emergency = {
 		["Transferir"] = function(...)
-			OSS:Fire(...)
+			OpenSendSystem:Fire(...)
 		end;
 		["Reviver"] = function() return end; 
 		["Iniciar Tratamento"] = function() return end;
@@ -25,7 +25,7 @@ local Bottons = {
 
 	Police = {
 		["Transferir"] = function(...)
-			OSS:Fire(...)
+			OpenSendSystem:Fire(...)
 		end;
 		["Algemar"] = function() return end;
 		["Revistar"] = function() return end;
@@ -37,7 +37,7 @@ local Bottons = {
 
 		Rosana = {
 			["Registrar-se"] = function (...)
-				COR:fire(...)
+				CallOpenRegister:fire(...)
 			end;
 			
 			["Fechar"] = function () return end
@@ -47,7 +47,7 @@ local Bottons = {
 
 	ATM = {
 		["Acessar banco"] = function(...)
-			COBM:Fire(...)
+			CallOpenBankMenu:Fire(...)
 		end;
 
 		["Fechar"] = function() return end;
