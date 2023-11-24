@@ -110,15 +110,14 @@ local list = {
 }
 
 function CheckService(Input)
-	if not Input or Input == "" then
-		print("Teste")
-	end
+	if not tonumber(Input) or tonumber(Input) == 0 then return CN:Fire("Valor invalido:", "Valor digitado é invalido ou nulo.", "ERROR", 5) end
+	return true
 end
 
 function OpenBankFrame(Model)
 	if PLR:GetAttribute('Panel') then return end
 	if Model.Model:GetAttribute("Stolen") then
-		return CN:Fire("ATM violada:", "Esta ATM foi violada, volte mais tarde.", "ALERT", 10)
+		return CN:Fire("ATM violada:", "Esta ATM foi violada, volte mais tarde.", "ALERT", 5)
 	end
 
 	local PlayerDB	= ClientData.get(PLR)
@@ -144,15 +143,21 @@ function OpenBankFrame(Model)
 	SaqueTotal.MouseButton1Click:Connect(function() SaqueImput.Text = PlayerDB.BankMoney end)
 	
 	ContinueSaque.MouseButton1Click:Connect(function()
-		CheckService(SaqueImput.Text)
-		--CWS:FireServer(tonumber(SaqueImput.Text))
+		local Check = CheckService(SaqueImput.Text)
+		
+		if Check then
+			CWS:FireServer(tonumber(SaqueImput.Text))
+		end
 	end)
 	
 	DepositTotal.MouseButton1Click:Connect(function() DepositImput.Text = PlayerDB.Money end)
 
 	ContinueDeposit.MouseButton1Click:Connect(function()
-		CheckService(DepositImput.Text)
-		--CDS:FireServer(tonumber(DepositImput.Text))
+		local Check = CheckService(tonumber(DepositImput.Text))
+
+		if Check then
+			CDS:FireServer(tonumber(DepositImput.Text))
+		end
 	end)
 
 	Connection = RC.Heartbeat:Connect(function(Step)

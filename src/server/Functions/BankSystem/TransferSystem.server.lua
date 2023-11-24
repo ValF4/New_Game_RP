@@ -1,7 +1,6 @@
 local RS :ReplicatedStorage	= game:GetService("ReplicatedStorage")
 local PS :Players			= game:GetService("Players")
 
-local CN :RemoteEvent		= RS:WaitForChild("Remotes").RemoteEvents.CallNotification
 local rs :RemoteFunction	= RS:WaitForChild("Remotes").RemoteFunctions.FireMoneyTranferer
 
 local SD					= require(game:GetService("ServerScriptService").ServerData)
@@ -13,7 +12,7 @@ rs.OnServerInvoke = function (Plr, PLAYER_CHAR, VALUE)
 	
 	local My_Data = SD.get(Plr)
 	
-	if My_Data.Money < VALUE then return CN:FireClient("Valor :", "Sua transferencia foi realizada com sucesso", "SUCCESS", 3) end
+	if My_Data.Money < VALUE then return false end
 	
 	local Plr_Receive =  PS:GetPlayerFromCharacter(PLAYER_CHAR)
 	

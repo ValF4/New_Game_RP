@@ -1,22 +1,27 @@
-local RS	:ReplicatedStorage		= game:GetService("ReplicatedStorage")
-local SD							= require(game:GetService("ServerScriptService").ServerData)
+local RS :ReplicatedStorage		= game:GetService("ReplicatedStorage")
+local SD						= require(game:GetService("ServerScriptService").ServerData)
+local CN 			        	= RS:WaitForChild("Remotes").RemoteEvents.CallNotificationServer
 
-local CN	:RemoteEvent 			= RS:WaitForChild("Remotes").RemoteEvents.CallNotificationServer
-local CDS 	:RemoteEvent 			= RS:WaitForChild("Remotes").RemoteEvents.CallDepositSystem
+local CDS :RemoteEvent 			= RS:WaitForChild("Remotes").RemoteEvents.CallDepositSystem
 
-local db 	:table = {}
+local db :table = {}
 
 function DepositSystem(Plr, Value)
-	if db[Plr.UserId] and tick() - db[Plr.UserId]  < .4 then return end db[Plr.UserId]  = tick()
+	if db[Plr.UserId] and tick() - db[Plr.UserId]  < .4 then return false end db[Plr.UserId]  = tick()
 
-	local My_Data = SD.get(Plr)
+	local PlayerData = SD.get(Plr)
 
-	if My_Data.Money < Value then return CN:FireClient(Plr, "Valor indisponivel:", "Você não possui o valor total para o deposito", "ERROR", 3) end
+	if PlayerData.Money < tonumber(Value) then
+		return CN:FireClient(Plr, "Deposito não realizado:", "Você não possui o valor em mãos para Deposito", "ERROR", 5)
+	else
+		PlayerData.Money -= Value
+		PlayerData.BankMoney += Value
+		CN:FireClient(Plr, "Deposito Realizado:", "Seu deposito no valor de $ " ..Value.. " foi realizado com sucesso", "SUCCESS", 5)
+	end
 
-	My_Data.Money -= Value
-	My_Data.BankMoney += Value
 
-	return true
+
 end
 
 CDS.OnServerEvent:Connect(function(Player, Value) DepositSystem(Player, Value) end)
+
