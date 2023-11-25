@@ -45,22 +45,23 @@ function OpenRegister(Model)
 					LoadedName..= v
 				else return CallNotification:Fire("Nome invalido:", "Verifique o nome digitado e tente novamente", "ERROR", 5) end
 			end
-		else return CallNotification:Fire("Nome invalido:", "Verifique o nome digitado e tente novamente", "ERROR", 5) end
+		end
 
 		local ReturnResponse = CityHallNameSet:InvokeServer(GetValue)
 
 		if ReturnResponse then CallNotification:Fire("Nome Registrado:", "Nome registrado com sucesso, parabens", "SUCCESS", 5) end
 		
-		while true do
-			local CHECK_MIN_DISTANCE = CheckServices.CHECK_DISTANCE_ITEM(LocalPlayer, Model.Model)
-			if not CHECK_MIN_DISTANCE or BreakLoop then
-				LocalPlayer:SetAttribute("Panel", nil)
-				Backgorund.Visible = false
-				break
-			end
-			task.wait(1)
-		end
 	end)
+
+	while true do
+		local CHECK_MIN_DISTANCE = CheckServices.CHECK_DISTANCE_ITEM(LocalPlayer, Model.Model)
+		if not CHECK_MIN_DISTANCE or BreakLoop then
+			LocalPlayer:SetAttribute("Panel", nil)
+			Backgorund.Visible = false
+			break
+		end
+		task.wait(1)
+	end
 end
 
 CallOpenRegister.Event:Connect(OpenRegister)
