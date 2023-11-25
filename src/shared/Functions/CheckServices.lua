@@ -61,13 +61,14 @@ end
 
 function CHECK_SERVICE.GET_TIME()
 	local GetTime = game:GetService("Lighting").ClockTime
+	local TimeOfDay = game:GetService("Lighting").TimeOfDay
 
 	if GetTime == 18 or GetTime <= 6 then
-		return "Boa noite"
+		return TimeOfDay, "Boa noite"
 	elseif GetTime == 6 or GetTime <= 12 then
-		return "Bom dia"
+		return TimeOfDay, "Bom dia"
 	elseif GetTime == 12 or GetTime <= 18 then
-		return "Boa tarde"
+		return TimeOfDay, "Boa tarde"
 	end
 end
 

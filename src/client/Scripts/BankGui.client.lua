@@ -110,7 +110,7 @@ function OpenBankFrame(Model)
 	end
 
 	local GetPlayerData	= ClientData.get(LocalPlayer)
-	local GetTime 		= CheckServices.GET_TIME()
+	local _, GetTime 		= CheckServices.GET_TIME()
 
 	LocalPlayer:SetAttribute("Panel", true)
 
