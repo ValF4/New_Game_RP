@@ -103,11 +103,6 @@ local list = {
 
 }
 
-function CheckService(Input)
-	if not tonumber(Input) or tonumber(Input) == 0 then return CallNotification:Fire("Valor invalido:", "Valor digitado é invalido ou nulo.", "ERROR", 5) end
-	return true
-end
-
 function OpenBankFrame(Model)
 	if LocalPlayer:GetAttribute('Panel') then return end
 	if Model.Model:GetAttribute("Stolen") then
@@ -137,20 +132,24 @@ function OpenBankFrame(Model)
 	SaqueTotal.MouseButton1Click:Connect(function() SaqueImput.Text = GetPlayerData.BankMoney end)
 	
 	ContinueSaque.MouseButton1Click:Connect(function()
-		local Check = CheckService(SaqueImput.Text)
-		
+		local Check = CheckServices.CHECK_INPUT_SERVICE(SaqueImput.Text, "Number")
+		print(Check)
 		if Check then
 			CallWithdrawSystem:FireServer(tonumber(SaqueImput.Text))
+		else
+			return CallNotification:Fire("Falha ao sacar:", "Esta ATM foi violada, volte mais tarde.", "ALERT", 5)
 		end
 	end)
 	
 	DepositTotal.MouseButton1Click:Connect(function() DepositImput.Text = GetPlayerData.Money end)
 
 	ContinueDeposit.MouseButton1Click:Connect(function()
-		local Check = CheckService(tonumber(DepositImput.Text))
+		local Check = CheckServices.CHECK_INPUT_SERVICE(DepositImput.Text, "Number")
 
 		if Check then
 			CallDepositSystem:FireServer(tonumber(DepositImput.Text))
+		else
+			return CallNotification:Fire("Falha ao depositar:", "Esta ATM foi violada, volte mais tarde.", "ALERT", 5)
 		end
 	end)
 

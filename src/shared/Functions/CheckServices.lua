@@ -17,6 +17,26 @@ end
 
 function CHECK_SERVICE.GET_PLAYER_WORK(Player) return DataService.get(Player).Work end
 
+function CHECK_SERVICE.CHECK_INPUT_SERVICE(INPUT, Type)
+	
+	if Type == "String" then
+		if not tostring(INPUT) or tostring(INPUT) == "" then
+			return false
+		else
+			return true
+		end
+	end
+
+	if Type == "Number" then
+		if not tonumber(INPUT) or tonumber(INPUT) == 0 then
+			return false
+		else
+			return true
+		end
+	end
+
+end
+
 function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
 	local Players = game:GetService("Players")
 
