@@ -56,6 +56,7 @@ function CloneApps ()
         Bottom.Image = GetList.Icon
         Bottom.Visible = true
         Bottom.MouseButton1Up:Connect(function()
+            AppLists.OpenAnimation(App)
             GetList.Function("meu nome é ".. App)
         end)
         n += 1

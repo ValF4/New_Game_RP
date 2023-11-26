@@ -37,7 +37,7 @@ PVLabel.Text    = GetData.BankMoney .. " $"
 local function ComputeAverage()
 	local average = 0
 
-	for _, deltaTime in ipairs(frameHistory) do
+	for _, deltaTime in ((frameHistory)) do
 		average += deltaTime
 	end
 
