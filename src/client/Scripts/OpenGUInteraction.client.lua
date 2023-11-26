@@ -71,7 +71,7 @@ UserInputService.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
 	local PRESSKEY 		= Enum.UserInputType.MouseButton1
 	local CEKING_CLICK 	= CheckServices.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
 	
-	if not LocalPlayer:GetAttribute("Panel") then
+	if not LocalPlayer:GetAttribute("Panel") or not LocalPlayer:GetAttribute("Phone") then
 		
 		if CEKING_CLICK and not isButtonPressed then
 			
