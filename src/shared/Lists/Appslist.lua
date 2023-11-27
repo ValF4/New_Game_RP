@@ -1,5 +1,7 @@
 local TweenService = game:GetService("TweenService")
 
+local TweenInfo = TweenInfo.new(.2)
+
 local Apps = {
     Calculator = {
         Icon = "rbxassetid://15473934454";
@@ -63,22 +65,37 @@ local Apps = {
 }
 
 function Apps.get(Name)
-    if not Name then return warn("Nome do aplicativo não passado.") end
-    for Index, App in ((Apps)) do
-        if Name == Index then return App end
-    end
+	local AppName = Apps[Name]
+	if not AppName then return warn("App name Error: ", Name) end
+	return AppName
 end
 
-function Apps.OpenAnimation(AppName)
-
-    TweenInfo = TweenInfo.new(5)
-
-    for index, App in ((Apps)) do
-        if AppName == index then
-            print(App.BackgroundColor)
-        end
-    end
+function Apps.OpenAnimation(AppName, Icon, TemplateList)
+	local App = Apps[AppName]
+    print(AppName)
+	if not App then return warn("App name Error: ", AppName) end
+	TemplateList.Tamplate.Visible = true
+	TemplateList.UiGradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.new(App.BackgroundColor[1][1])),
+		ColorSequenceKeypoint.new(0.5, Color3.new(App.BackgroundColor[2][2])),
+		ColorSequenceKeypoint.new(1, Color3.new(App.BackgroundColor[3][3])),
+	}) 
+	TemplateList.TamplateIcon.Image = Icon
+	TweenService:Create(TemplateList.Tamplate, TweenInfo, {Size = UDim2.fromScale(0.939, 0.956)}):Play()
+	task.delay(2, function ()
+		TweenService:Create(TemplateList.Tamplate, TweenInfo, {Transparency = 1}):Play()
+        TemplateList.Tamplate.Visible = false
+		TemplateList.Tamplate = UDim2.fromScale(0,0)
+	end)
+   	--print(App.BackgroundColor)
+   	--print(Icon)
 
 end
 
 return Apps
+
+--00:47:55.195   {
+--	[1] = Transition,
+--	[2] = UIGradient,
+--	[3] = Icon
+--}  -  Cliente - Appslist:77

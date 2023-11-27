@@ -51,12 +51,10 @@ ClientData.profileChanged.Event:Connect(function()
 end)
 
 
-RunService.RenderStepped:Connect(function(deltaTime)
+RunService.Heartbeat:Connect(function(deltaTime)
     index = (index + 1) % 61
 
     frameHistory[index] = deltaTime
 
-    task.delay(1, function() TextStatus.Text = "Seu ID: " ..LocalPlayer.UserId.. " - " ..string.format(format, 1 / ComputeAverage()).. " - Insanity Version (0.0.1)" end)
+    TextStatus.Text = "Seu ID: " ..LocalPlayer.UserId.. " - " ..string.format(format, math.ceil(1 / ComputeAverage())).. " - Insanity Version (0.0.1)"
 end)
-
-

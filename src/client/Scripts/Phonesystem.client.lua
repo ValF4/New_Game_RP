@@ -23,17 +23,26 @@ local PhoneScreem = PlayerGui:WaitForChild("Phone")
 
 local PhoneBackground = PhoneScreem:WaitForChild("Background")
 
-local PhoneWallpaper = PhoneBackground:WaitForChild("Wallpaper")
-local NotificationBar = PhoneBackground:WaitForChild("NotificationBar")
-local FooterBar = PhoneBackground:WaitForChild("Footer")
-local MainBar = PhoneBackground:WaitForChild("Main")
+local HomeGui = PhoneBackground:WaitForChild("Home")
 
-local TimeLabel = NotificationBar:WaitForChild("Time")
+local PhoneWallpaper = HomeGui:WaitForChild("Wallpaper")
+local NotificationBar = HomeGui:WaitForChild("NotificationBar")
+local FooterBar = HomeGui:WaitForChild("Footer")
+local MainBar = HomeGui:WaitForChild("Main")
+
+local TimeLabel = NotificationBar.Time
+
+local Tamplate = PhoneBackground:WaitForChild("Transition")
+local UiGradient = Tamplate.UIGradient
+local TamplateIcon = Tamplate.Icon
+
+local TransitionList = {Tamplate = Tamplate, UiGradient = UiGradient, TamplateIcon = TamplateIcon}
+
 
 --CloneBottons
 
-local FooterButtomTemplate = FooterBar:WaitForChild("Template").CloneBottom
-local MainButtomTemplate = MainBar:WaitForChild("Template").CloneBottom
+local FooterButtomTemplate = FooterBar.Template.CloneBottom
+local MainButtomTemplate = MainBar.Template.CloneBottom
 
 -- TweenService Config
 
@@ -56,8 +65,8 @@ function CloneApps ()
         Bottom.Image = GetList.Icon
         Bottom.Visible = true
         Bottom.MouseButton1Up:Connect(function()
-            AppLists.OpenAnimation(App)
-            GetList.Function("meu nome é ".. App)
+            AppLists.OpenAnimation(App, GetList.Icon, TransitionList)
+            --HomeGui.Visible = false
         end)
         n += 1
     end
@@ -70,7 +79,8 @@ function CloneApps ()
         Bottom.Image = GetList.Icon
         Bottom.Visible = true
         Bottom.MouseButton1Up:Connect(function()
-            GetList.Function("meu nome é ".. Mainapp)
+            AppLists.OpenAnimation(Mainapp, GetList.Icon, TransitionList)
+            --HomeGui.Visible = false
         end)
         n += 1
     end
@@ -109,6 +119,9 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
                 OpenPhone = false
             end)
         else --Open Phone
+            local GetWallpaper = DataStore.get().Phone.Configs.wallpaper
+            if GetWallpaper == "" then GetWallpaper = "rbxassetid://15478051388" end
+            PhoneWallpaper.Image = GetWallpaper
             Player:SetAttribute("Panel", true)
             Player:SetAttribute("Phone", true)
             PhoneBackground.Visible = true
