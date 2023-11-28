@@ -23,10 +23,13 @@ local PhoneScreem = PlayerGui:WaitForChild("Phone")
 
 local PhoneBackground = PhoneScreem:WaitForChild("Background")
 
+local HomeButtom = PhoneBackground:WaitForChild("ButtomHome")
+local NotificationBar = PhoneBackground:WaitForChild("NotificationBar")
+
 local HomeGui = PhoneBackground:WaitForChild("Home")
+local GetApps = PhoneBackground:WaitForChild("Aplications")
 
 local PhoneWallpaper = HomeGui:WaitForChild("Wallpaper")
-local NotificationBar = HomeGui:WaitForChild("NotificationBar")
 local FooterBar = HomeGui:WaitForChild("Footer")
 local MainBar = HomeGui:WaitForChild("Main")
 
@@ -38,6 +41,8 @@ local TamplateIcon = Tamplate.Icon
 
 local TransitionList = {Tamplate = Tamplate, UiGradient = UiGradient, TamplateIcon = TamplateIcon}
 
+local CurrentOpen = ""
+local lastFrame = ""
 
 --CloneBottons
 
@@ -66,7 +71,8 @@ function CloneApps ()
         Bottom.Visible = true
         Bottom.MouseButton1Up:Connect(function()
             AppLists.OpenAnimation(App, GetList.Icon, TransitionList)
-            --HomeGui.Visible = false
+			HomeGui.Visible = false
+			CurrentOpen = App
         end)
         n += 1
     end
@@ -80,7 +86,8 @@ function CloneApps ()
         Bottom.Visible = true
         Bottom.MouseButton1Up:Connect(function()
             AppLists.OpenAnimation(Mainapp, GetList.Icon, TransitionList)
-            --HomeGui.Visible = false
+			HomeGui.Visible = false
+			CurrentOpen = Mainapp
         end)
         n += 1
     end
@@ -100,6 +107,90 @@ function DestoryButtons()
     end
 end
 
+--function Open(name: string, close: boolean): ()
+--        
+--    local function OpenFrame(frame)
+--
+--        if not frame or close then return end
+--
+--		TweenService:Create(frame, TweenInfo, {Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
+--        
+--    end
+--
+--    local function CloseFrame(frame)
+--        
+--        if not frame then return end
+--
+--		TweenService:Create(frame, TweenInfo, {Position = UDim2.new(0.5, 0, 3, 0)}):Play()
+--        
+--    end
+--
+--    if lastFrame then 
+--
+--        if lastFrame == name then 
+--
+--			local oldFrame = GetApps[lastFrame]
+--
+--            CloseFrame(oldFrame)
+--            lastFrame = nil
+--
+--        else
+--
+--			local oldFrame = GetApps[lastFrame]
+--			local newFrame = GetApps:FindFirstChild(name)
+--
+--            CloseFrame(oldFrame)
+--            OpenFrame(newFrame)
+--
+--            lastFrame = newFrame and name
+--
+--        end
+--
+--    else
+--
+--		local newFrame = GetApps:FindFirstChild(name)
+--
+--        OpenFrame(newFrame)
+--        lastFrame = newFrame and name
+--
+--    end
+--
+--end
+
+HomeButtom.MouseButton1Up:Connect(function()
+	print(CurrentOpen)
+	HomeGui.Visible = true
+end)
+
+function OpenPhoneAnimation ()
+	local GetWallpaper = DataStore.get().Phone.Configs.wallpaper
+	
+	if GetWallpaper == "" then GetWallpaper = "rbxassetid://15478051388" end
+	
+	PhoneWallpaper.Image = GetWallpaper
+	
+	Player:SetAttribute("Panel", true)
+	Player:SetAttribute("Phone", true)
+	
+	
+	PhoneBackground.Visible = true
+	
+	TweenService:Create(PhoneBackground, TweenInfo, {Position = UDim2.fromScale(0.733, 1)}):Play()
+	OpenPhone = true
+	CloneApps()
+end
+
+function ClosePhoneAnimation()
+	TweenService:Create(PhoneBackground, TweenInfo, {Position = UDim2.fromScale(0.733 ,1.65)}):Play()
+	task.delay(.3, function()
+		DestoryButtons()
+		Player:SetAttribute("Panel", nil)
+		Player:SetAttribute("Phone", nil)
+		PhoneBackground.Visible = false
+		OpenPhone = false
+	end)
+end
+
 UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 
     if db[Player.UserId] and tick() - db[Player.UserId]  < .3 then return end db[Player.UserId]  = tick()
@@ -110,26 +201,9 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
     if Checking_PressKey then
 
         if OpenPhone then --Clouse Phone
-            TweenService:Create(PhoneBackground, TweenInfo, {Position = UDim2.fromScale(0.733 ,1.65)}):Play()
-            task.delay(.3, function()
-                DestoryButtons()
-                Player:SetAttribute("Panel", nil)
-                Player:SetAttribute("Phone", nil)
-                PhoneBackground.Visible = false
-                OpenPhone = false
-            end)
+			ClosePhoneAnimation()
         else --Open Phone
-            local GetWallpaper = DataStore.get().Phone.Configs.wallpaper
-            if GetWallpaper == "" then GetWallpaper = "rbxassetid://15478051388" end
-            PhoneWallpaper.Image = GetWallpaper
-            Player:SetAttribute("Panel", true)
-            Player:SetAttribute("Phone", true)
-            PhoneBackground.Visible = true
-            TweenService:Create(PhoneBackground, TweenInfo, {Position = UDim2.fromScale(0.733, 1)}):Play()
-			OpenPhone = true
-			
-			CloneApps()
-
+			OpenPhoneAnimation()
 			while true do
 				local Time, _ = CheckServices.GET_TIME()
 				TimeLabel.Text = string.sub(Time, 1, 5)
