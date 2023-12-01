@@ -7,7 +7,8 @@ local InteractionGui = PlayerGui:WaitForChild("PlayerInteractionGui")
 local GetMouse = LocalPlayer:GetMouse()
 
 local CheckServices = require(ReplicatedStorage.Shared.Functions.CheckServices)
-local BottonList	= require(ReplicatedStorage.Shared.Lists.BottonList)
+local PlayerData = require(ReplicatedStorage.Remotes.Modules.ClientData)
+local BottonList = require(ReplicatedStorage.Shared.Lists.BottonList)
 
 local ScrollingFrame: ScrollingFrame = InteractionGui.ScrollingFrame
 
@@ -80,7 +81,7 @@ UserInputService.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
 			
 			if Model then
 				isButtonPressed = true
-				local PlayerJob = CheckServices.GET_PLAYER_WORK(LocalPlayer)
+				local PlayerJob = PlayerData.get().Work
 
 				ScrollingFrame.Position = UDim2.new(0, GetMouse.X, 0, GetMouse.Y)
 				ScrollingFrame.Visible = true
