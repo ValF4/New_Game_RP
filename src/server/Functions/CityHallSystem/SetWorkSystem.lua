@@ -7,7 +7,7 @@ local SetWork = {}
 function SetWork.Set(Player, Job)
 	local GetplayerData = DataServices.get(Player)
 	GetplayerData.Work = Job
-	return
+	return GetplayerData.Work
 end
 
 return SetWork

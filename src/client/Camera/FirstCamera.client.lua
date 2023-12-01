@@ -1,24 +1,23 @@
 local CheckServices = require(game:GetService("ReplicatedStorage").Shared.Functions.CheckServices)
 local UserInputService = game:GetService("UserInputService")
-local LocalPlayer = game.Players.LocalPlayer
+local Player = game.Players.LocalPlayer
 
-
-local isFirstPersonMode = false
+local isFirstPersonMode: boolean = false
 
 local function toggleFirstPersonMode()
     isFirstPersonMode = not isFirstPersonMode
 
     if isFirstPersonMode then
-        LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson
+        Player.CameraMode = Enum.CameraMode.LockFirstPerson
     else
-        LocalPlayer.CameraMode = Enum.CameraMode.Classic
+        Player.CameraMode = Enum.CameraMode.Classic
     end
 end
 
-UserInputService.InputBegan:Connect(function(INPUT, GAME_PROCESSED_EVENT)
-    local PRESSKEY = Enum.KeyCode.C
-    local CEKING_MODULE = CheckServices.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
-    if CEKING_MODULE then
+UserInputService.InputBegan:Connect(function(Input, GameProcessedEvent)
+    local keyPressed = Enum.KeyCode.C
+    local ClickService = CheckServices.PLAYER_INTERACTION(Input, GameProcessedEvent, keyPressed)
+    if ClickService then
         toggleFirstPersonMode()
     end
 end)

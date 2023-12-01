@@ -1,75 +1,76 @@
-local LocalPlayer 	= game:GetService("Players").LocalPlayer
-local PlayerGui 	= LocalPlayer:WaitForChild("PlayerGui")
-
-local Assets = game:GetService("ReplicatedStorage"):WaitForChild("Remotes")
+local Player = game:GetService("Players").LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local CallNotification 		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallNotification
-local CallOpenBanckMenu		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
-local CallDepositSystem		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallDepositSystem
-local CallWithdrawSystem	= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallWithdrawSystem
-local Modules  				= Assets:WaitForChild("Modules")
-local Networks 		 		= Assets:WaitForChild("Network")
+local Assets: Folder = game:GetService("ReplicatedStorage"):WaitForChild("Remotes")
+
+local CallNotification = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallNotification
+local CallOpenBanckMenu = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
+local CallDepositSystem	= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallDepositSystem
+local CallWithdrawSystem = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallWithdrawSystem
+local Modules: Folder = Assets:WaitForChild("Modules")
+local Networks: Folder = Assets:WaitForChild("Network")
 
 local CheckServices = require(ReplicatedStorage.Shared.Functions.CheckServices)
-local ClientData 	= require(Modules.ClientData)
+local ClientData = require(Modules.ClientData)
 
-local BankBackground = PlayerGui:WaitForChild("BankGui").Background
+local BankBackground: Frame = PlayerGui:WaitForChild("BankGui").Background
+
 --Menu
-local HomeButton = BankBackground.Menu.home
-local ExitButton = BankBackground.Menu.exit
+local HomeButton: ImageButton = BankBackground.Menu.home
+local ExitButton: ImageButton = BankBackground.Menu.exit
 
 --Home Gui
-local HomeGui 			= BankBackground.Home
-local DailyText         = BankBackground.Home.Boa
-local TextName 	        = BankBackground.Home.PlayerName
-local BalanceBackground = BankBackground.Home.balanceBackground
-local OptionMenu		= BankBackground.Home.Options_Menu
+local HomeGui: Frame = BankBackground.Home
+local DailyText: TextLabel = BankBackground.Home.Boa
+local TextName: TextLabel = BankBackground.Home.PlayerName
+local BalanceBackground: Frame = BankBackground.Home.balanceBackground
+local OptionMenu: Frame = BankBackground.Home.Options_Menu
 
-local OpenExtrado		= BalanceBackground.OpenBalance
-local Balance			= BalanceBackground.Saldo
+local OpenExtrado: TextButton = BalanceBackground.OpenBalance
+local Balance: TextLabel = BalanceBackground.Saldo
 
-local SaqueButton		= OptionMenu.SaqueButton
-local TransfererButton	= OptionMenu.TransferirButton
-local DepositButton		= OptionMenu.DepositarButton
+local SaqueButton: TextButton = OptionMenu.SaqueButton
+local TransfererButton: TextButton = OptionMenu.TransferirButton
+local DepositButton: TextButton = OptionMenu.DepositarButton
 
 -- Tranferir Menu
-local TranfererGui	= BankBackground.Transferir
+local TranfererGui: Frame = BankBackground.Transferir
 
-local OneAba = TranfererGui.History['1']
+local OneAba: TextButton = TranfererGui.History['1']
 
-local TransferyHistoy		= BankBackground.Transferir.Tranferir_Menu -- Transfery Gui Menu
-local ScrollingHistory		= BankBackground.Transferir.Tranferir_Menu.ScrollingFrame
-local CloneBottomHistory	= BankBackground.Transferir.Tranferir_Menu.ScrollingFrame.CloneBottom
+local TransferyHistoy: Frame = TranfererGui.Tranferir_Menu -- Transfery Gui Menu
+local ScrollingHistory: ScrollingFrame = TranfererGui.Tranferir_Menu.ScrollingFrame
+local CloneBottomHistory: TextButton = TranfererGui.Tranferir_Menu.ScrollingFrame.CloneBottom
 
-local TransfererMenu = BankBackground.Transferir.balanceBackground
+local TransfererMenu: Frame = TranfererGui.balanceBackground
 
-local TextSaldo	= TransfererMenu.Value
+local TextSaldo: TextLabel = TransfererMenu.Value
 
-local TranfererInput = TransfererMenu.Transferir
-local ValueInput	 = TransfererMenu.InputValor
+local TranfererInput: TextBox = TransfererMenu.Transferir
+local ValueInput: TextBox = TransfererMenu.InputValor
 
-local ValueTotal	 = TransfererMenu.Total
-local ContinueBotton = TransfererMenu.Continuar
+local ValueTotal :TextButton = TransfererMenu.Total
+local ContinueBotton :TextButton = TransfererMenu.Continuar
 
 --Deposit Menu
 
-local DepositGui 		= BankBackground.Depositar
-local DepositHistoryOne	= DepositGui.History['1']
-local DepositImput		= DepositGui.balanceBackground.InputValor
-local DepositTotal		= DepositGui.balanceBackground.Total
-local ContinueDeposit	= DepositGui.balanceBackground.Continuar
+local DepositGui: Frame = BankBackground.Depositar
+local DepositHistoryOne: TextButton	= DepositGui.History['1']
+local DepositImput: TextBox	= DepositGui.balanceBackground.InputValor
+local DepositTotal: TextButton = DepositGui.balanceBackground.Total
+local ContinueDeposit: TextButton = DepositGui.balanceBackground.Continuar
 
 --Saque Menu
 
-local SaqueGui 		  = BankBackground.Sacar
-local SaqueHistoryOne = SaqueGui.History['1']
-local SaqueImput	  = SaqueGui.balanceBackground.InputValor
-local SaqueTotal	  = SaqueGui.balanceBackground.Total
-local ContinueSaque	  = SaqueGui.balanceBackground.Continuar
-local CurrentFrame 	  = "Home"
-local Connection 	  = nil
+local SaqueGui: Frame = BankBackground.Sacar
+local SaqueHistoryOne: TextButton = SaqueGui.History['1']
+local SaqueImput: TextBox = SaqueGui.balanceBackground.InputValor
+local SaqueTotal : TextButton = SaqueGui.balanceBackground.Total
+local ContinueSaque : TextButton = SaqueGui.balanceBackground.Continuar
+local CurrentFrame: string = "Home"
+local Connection
 
 local list = {
 
@@ -104,25 +105,25 @@ local list = {
 }
 
 function OpenBankFrame(Model)
-	if LocalPlayer:GetAttribute('Panel') then return end
+	if Player:GetAttribute('Panel') then return end
 	if Model.Model:GetAttribute("Stolen") then
 		return CallNotification:Fire("ATM violada:", "Esta ATM foi violada, volte mais tarde.", "ALERT", 5)
 	end
 
-	local GetPlayerData	= ClientData.get(LocalPlayer)
-	local _, GetTime 		= CheckServices.GET_TIME()
+	local GetPlayerData	= ClientData.get(Player)
+	local _, GetTime = CheckServices.GET_TIME()
 
-	LocalPlayer:SetAttribute("Panel", true)
+	Player:SetAttribute("Panel", true)
 
-	DailyText.Text	  = GetTime
-	TextName.Text 	  = GetPlayerData.Name
+	DailyText.Text = GetTime
+	TextName.Text = GetPlayerData.Name
 	
-	Balance.Text	= "$ " ..tostring(GetPlayerData.BankMoney)
-	TextSaldo.Text 	= "$ " ..tostring(GetPlayerData.BankMoney)
+	Balance.Text = "$ " ..tostring(GetPlayerData.BankMoney)
+	TextSaldo.Text = "$ " ..tostring(GetPlayerData.BankMoney)
 
 	ClientData.profileChanged.Event:Connect(function()
-		Balance.Text	= "$ " ..tostring(GetPlayerData.BankMoney)
-		TextSaldo.Text 	= "$ " ..tostring(GetPlayerData.BankMoney)
+		Balance.Text = "$ " ..tostring(GetPlayerData.BankMoney)
+		TextSaldo.Text = "$ " ..tostring(GetPlayerData.BankMoney)
 	end)
 
 	BankBackground.Visible = true
@@ -157,7 +158,7 @@ function OpenBankFrame(Model)
 		timer += Step
 		if timer <= 0.5 then return end
 		timer = 0
-		if CheckServices.CHECK_DISTANCE_ITEM(LocalPlayer, Model.Model) then return end
+		if CheckServices.CHECK_DISTANCE_ITEM(Player, Model.Model) then return end
 		CloseBankFrame()
 	end)
 end
@@ -170,7 +171,7 @@ end
 
 function CloseBankFrame()
 	BankBackground.Visible = false
-	LocalPlayer:SetAttribute("Panel", nil)
+	Player:SetAttribute("Panel", nil)
 	Connection:Disconnect()
 	CloseCurrentFrame()
 	list.Home.Frame.Visible = true

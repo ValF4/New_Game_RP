@@ -1,13 +1,13 @@
-local RS	:ReplicatedStorage	= game:GetService("ReplicatedStorage")
+local ReplicatedStorage	= game:GetService("ReplicatedStorage")
 
-local CHNS	:RemoteFunction 	= RS:WaitForChild("Remotes").RemoteFunctions.CityHallNameSet
-local DB	:ModuleScript		= require(game:GetService("ServerScriptService").ServerData)
+local CityHallNameSet = ReplicatedStorage:WaitForChild("Remotes").RemoteFunctions.CityHallNameSet
+local ServerData = require(game:GetService("ServerScriptService").ServerData)
 
 local db = {}
 
-CHNS.OnServerInvoke = function (PLR, NewName)
-	if db[PLR.UserId] and tick() - db[PLR.UserId]  < .4 then return end db[PLR.UserId]  = tick()
-	local GetDataBase = DB.get(PLR)
+CityHallNameSet.OnServerInvoke = function (Player, NewName)
+	if db[Player.UserId] and tick() - db[Player.UserId]  < .4 then return end db[Player.UserId]  = tick()
+	local GetDataBase = ServerData.get(Player)
 	GetDataBase.Name = NewName
-	return true
+	return GetDataBase.Name
 end

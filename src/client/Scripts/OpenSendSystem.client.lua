@@ -1,34 +1,33 @@
-local RS							= game:GetService("ReplicatedStorage")
-local PS 							= game:GetService("Players").LocalPlayer
-local SG							= PS:WaitForChild("PlayerGui")
-local SSS							= game:GetService("ServerScriptService")
+local ReplicatedStorage	= game:GetService("ReplicatedStorage")
+local Player = game:GetService("Players").LocalPlayer
+local PlayerGui	= Player:WaitForChild("PlayerGui")
+local ServerScriptService = game:GetService("ServerScriptService")
 
-local Assets 		 				= RS:WaitForChild("Remotes")
+local Remotes: Folder = ReplicatedStorage:WaitForChild("Remotes")
 
-local Modules  						= Assets:WaitForChild("Modules")
-local Networks 		 				= Assets:WaitForChild("Network")
+local Modules: Folder = Remotes:WaitForChild("Modules")
+local Networks: Folder = Remotes:WaitForChild("Network")
 
-local CD 							= require(Modules.ClientData)
-local CM 							= require(RS.Shared.Functions.CheckServices)
+local ClientData = require(Modules.ClientData)
+local CheckingServices = require(ReplicatedStorage.Shared.Functions.CheckServices)
 
-local CallNotification 				= RS:WaitForChild("Remotes").RemoteEvents.CallNotification
-local CALL_OPENSENDSYSTEM 			= RS:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
-local replicated 					= RS:WaitForChild("Remotes").RemoteFunctions.FireMoneyTranferer
+local CallNotification = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallNotification
+local CALL_OPENSENDSYSTEM = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
+local replicated = ReplicatedStorage:WaitForChild("Remotes").RemoteFunctions.FireMoneyTranferer
 
-local GUISendMoney 					= SG.SendMoneyGui
-local SendMoneyBackground			= GUISendMoney.Background_PANEL
-local SendMoneyInput				= SendMoneyBackground.INPUT_VALUE
-local TextMoneyPanel				= SendMoneyBackground.VALUE_MONEY
-local SendBottonConfirm				= SendMoneyBackground.ENVIAR
-local CloseBottonPanel				= SendMoneyBackground.BACKGROUND_HEADER.Close
+local GUISendMoney: ScreenGui = PlayerGui.SendMoneyGui
+local SendMoneyBackground: Frame = GUISendMoney.BackgroundPanel
+local SendMoneyInput: TextBox = SendMoneyBackground.INPUT_VALUE
+local TextMoneyPanel: TextLabel = SendMoneyBackground.VALUE_MONEY
+local SendBottonConfirm: TextButton= SendMoneyBackground.ENVIAR
+local CloseBottonPanel: TextButton= SendMoneyBackground.BACKGROUND_HEADER.Close
 
-
-function openSendSystem(MODEL)
+function openSendSystem(Model)
 	local BreakLoop: boolean = false
-	PS:SetAttribute("Panel", true)
+	Player:SetAttribute("Panel", true)
 	
 	SendMoneyBackground.Visible = true
-	local GetDataPlayer = CD.get(PS)
+	local GetDataPlayer = ClientData.get(Player)
 	
 	TextMoneyPanel.Text = "$ " ..GetDataPlayer.Money
 	SendMoneyInput.Text = "$ "
@@ -43,8 +42,8 @@ function openSendSystem(MODEL)
 		if not Value then return CallNotification:Fire("Erro na Transferencia:", "Valor invalido, favor, digitar um valor valido", "ERROR", 5) end
 
 		if Value <= 0 then return CallNotification:Fire("Erro na Transferencia:", "Valor invalido, favor, digitar um valor valido", "ERROR", 5) end
-        print(MODEL.Model)
-		replicated:InvokeServer(MODEL.Model, Value)
+        print(Model.Model)
+		replicated:InvokeServer(Model.Model, Value)
 	end)
 
 	CloseBottonPanel.MouseButton1Up:Connect(function()
@@ -53,9 +52,9 @@ function openSendSystem(MODEL)
 	end)
 
 	while true do
-		local CHECK_MIN_DISTANCE = CM.CHECK_DISTANCE_ITEM(PS, MODEL.Model)
-		if not CHECK_MIN_DISTANCE or BreakLoop then
-			PS:SetAttribute("Panel", nil)
+		local DistanceService = CheckingServices.CHECK_DISTANCE_ITEM(Player, Model.Model)
+		if not DistanceService or BreakLoop then
+			Player:SetAttribute("Panel", nil)
 			SendMoneyBackground.Visible = false
 			break
 		end

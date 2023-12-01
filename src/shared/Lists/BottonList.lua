@@ -1,8 +1,8 @@
-local ReplicatedStorage :ReplicatedStorage 	= game:GetService("ReplicatedStorage")
+local ReplicatedStorage :ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local OpenSendSystem	:RemoteEvent 		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
-local CallOpenBankMenu 	:RemoteEvent		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
-local CallOpenRegister 	:RemoteEvent 		= ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
+local OpenSendSystem	:RemoteEvent = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenSendSystem
+local CallOpenBankMenu 	:RemoteEvent = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenBankMenu
+local CallOpenRegister 	:RemoteEvent = ReplicatedStorage:WaitForChild("Remotes").RemoteEvents.CallOpenRegister
 
 local Bottons = {
 

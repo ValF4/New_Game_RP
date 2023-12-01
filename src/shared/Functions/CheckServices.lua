@@ -1,13 +1,13 @@
 local ReplicatedStorage	= game:GetService("ReplicatedStorage")
 
-local Modules 	= ReplicatedStorage:WaitForChild("Remotes").Modules
-local Network 	= ReplicatedStorage:WaitForChild("Remotes").Network
+local Modules = ReplicatedStorage:WaitForChild("Remotes").Modules
+local Network = ReplicatedStorage:WaitForChild("Remotes").Network
 
-local DataService	= require(Modules.ClientData)
+local DataService = require(Modules.ClientData)
 
-local CHECK_SERVICE = {}
+local checkingServices = {}
 
-function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
+function checkingServices.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
 	if not GAME_PROCESSED_EVENT and INPUT.KeyCode == PRESSKEY or INPUT.UserInputType == PRESSKEY then
 		return true
 	else
@@ -15,21 +15,17 @@ function CHECK_SERVICE.PLAYER_INTERACTION(INPUT, GAME_PROCESSED_EVENT, PRESSKEY)
 	end
 end
 
-function CHECK_SERVICE.GET_PLAYER_WORK(Player) return DataService.get(Player).Work end
-
-function CHECK_SERVICE.CHECK_INPUT_SERVICE(INPUT, Type)
+function checkingServices.CHECK_INPUT_SERVICE(INPUT, Type)
 	
 	if Type == "String" then
-		if not tostring(INPUT) or tostring(INPUT) == "" then
-			return false
+		if not tostring(INPUT) or tostring(INPUT) == "" then return false
 		else
 			return true
 		end
 	end
 
 	if Type == "Number" then
-		if not tonumber(INPUT) or tonumber(INPUT) == 0 then
-			return false
+		if not tonumber(INPUT) or tonumber(INPUT) == 0 then return false
 		else
 			return true
 		end
@@ -37,15 +33,15 @@ function CHECK_SERVICE.CHECK_INPUT_SERVICE(INPUT, Type)
 
 end
 
-function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
+function checkingServices.ON_TOP_MOUSE(PLAYER)
 	local Players = game:GetService("Players")
 
 	local Mouse = PLAYER:GetMouse()
-	local Target : Instance= Mouse.Target
+	local Target = Mouse.Target
 
 	if not Target then return end
 
-	local Model = Target:FindFirstAncestorOfClass("Model")
+	local Model :Model = Target:FindFirstAncestorOfClass("Model")
 	if not Model then return end
 
 	if not Players:GetPlayerFromCharacter(Model) then -- NPC and ATM
@@ -59,7 +55,7 @@ function CHECK_SERVICE.ON_TOP_MOUSE(PLAYER)
 	end
 end
 
-function CHECK_SERVICE.GET_TIME()
+function checkingServices.GET_TIME()
 	local GetTime = game:GetService("Lighting").ClockTime
 	local TimeOfDay = game:GetService("Lighting").TimeOfDay
 
@@ -72,17 +68,17 @@ function CHECK_SERVICE.GET_TIME()
 	end
 end
 
-function CHECK_SERVICE.GET_POSITION_PLAYER(PLAYER)
+function checkingServices.GET_POSITION_PLAYER(PLAYER)
 	local GetPlayerPossition = PLAYER.Character.Head.position
 	local pos = {math.floor(GetPlayerPossition.X), math.floor(GetPlayerPossition.Y), math.floor(GetPlayerPossition.Z)}
 	return pos
 end
 
-function CHECK_SERVICE.CHECK_DISTANCE_ITEM(PLAYER, ITENS)
+function checkingServices.CHECK_DISTANCE_ITEM(PLAYER, ITENS)
 	local MaxDistance          = 12
 	local ModelPlayerTwo       = ITENS:GetPivot().Position
 
 	return not not (PLAYER:DistanceFromCharacter(ModelPlayerTwo) <= MaxDistance)
 end
 
-return CHECK_SERVICE
+return checkingServices
